@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分级诊疗系统</title>
+    <link rel="stylesheet" href="../css/page/index.css">
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .tab-div, .act-tab > div, .mend-head li, .mend-foot li {
+            behavior: url(../js/PIE/PIE.htc);
+            position: relative;
+        }
+        .layui-layer-content {
+            height: auto !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainPage">
+        <div class="titBox">
+            <div class="sys-tit fl" id="sysBox">
+                <!--<img src="../img/logo.png" alt="">-->
+                <!--<span>分级诊疗</span>-->
+                <img src="" alt="">
+                <span></span>
+            </div>
+            <div class="head-right fr">
+                <div class="fr">
+                    <!--头像-->
+                    <div class="userIcon fl">
+                        <i class="iconfont">&#xe60a;</i>
+                    </div>
+                    <!--用户名-->
+                    <div class="userBox fl">
+                        <div class="userName cursorP">
+                            <span id="username"></span>
+                            <i class="iconfont">&#xe65a;</i>
+                            <ul class="user-ul">
+                                <li class="changePassword">修改密码</li>
+                                <li class="logout">退出登录</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+        <div class="bodyBox">
+            <div class="leftMenu">
+                <div class="menubox">
+                    <!--安全起见，根据登陆动态加载菜单-->
+                    <ul class="menu-ul" id="menuUlBox">
+                        <!--<li class="menu-li">-->
+                            <!--<div class="menu-div">-->
+                                <!--<i class="iconfont">&#xe607;</i>-->
+                                <!--<span>转出管理</span>-->
+                            <!--</div>-->
+                            <!--<ul class="menu-ul erji-ul">-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="outTransfer.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>转出申请</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="rotaryList.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>回转列表</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                        <!--<li class="menu-li">-->
+                            <!--<div class="menu-div">-->
+                                <!--<i class="iconfont">&#xe607;</i>-->
+                                <!--<span>转入管理</span>-->
+                            <!--</div>-->
+                            <!--<ul class="menu-ul erji-ul">-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="acceptTransfer.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>接收转入</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="rotaryTransfer.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>回转转诊</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                        <!--<li class="menu-li">-->
+                            <!--<div class="menu-div">-->
+                                <!--<i class="iconfont">&#xe607;</i>-->
+                                <!--<span>统计分析</span>-->
+                            <!--</div>-->
+                            <!--<ul class="menu-ul erji-ul">-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="statisticsRolloff.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>转出统计</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="statisticInto.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>转入统计</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="regionStatisticOut.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>区域转出统计</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="regionStatisticInto.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>区域转入统计</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                        <!--<li class="menu-li">-->
+                            <!--<div class="menu-div">-->
+                                <!--<i class="iconfont">&#xe607;</i>-->
+                                <!--<span>系统管理</span>-->
+                            <!--</div>-->
+                            <!--<ul class="menu-ul erji-ul">-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="hospitalManageList.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>医院管理</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="referralRelationship.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>医院转诊关系</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="departManageList.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>科室管理</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="doctorManageList.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>医生管理</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="roleManageList.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>角色管理</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="powerManageList.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>权限管理</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="systemSetup.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>系统设置</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                                <!--<li class="menu-li">-->
+                                    <!--<div class="menu-div" src="changePassword.html">-->
+                                        <!--<i class="iconfont"></i>-->
+                                        <!--<span>修改密码</span>-->
+                                    <!--</div>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="rightCont">
+                <div class="headbox">
+                    <div class="head-left fl">
+                        <div class="arrow-btn arrow-l fl"></div>
+                        <div class="menu-box fl">
+                            <div class="menu-box-wid">
+                                <ul class="ul-mend mend-head mend-act fl">
+                                    <li></li>
+                                </ul>
+                                <ul class="tab-ul fl">
+                                    <li class="tab-li tab-home act-tab" src="home.html">
+                                        <div>
+                                            <span>首页概览</span>
+                                            <!--<i class="iconfont iconBtn">&#xe619;</i>-->
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="ul-mend mend-foot mend-act fl">
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="arrow-btn arrow-r fl"></div>
+                    </div>
+                </div>
+                <iframe id="mainIframe" class="mainIframe" allowTransparency="true" frameborder="no" border="0" src="home.html"></iframe>
+            </div>
+        </div>
+        <!--修改密码弹框-->
+        <div class="popup-box" id="pwdPop">
+            <form class="layui-form" action="" id="addform">
+                <div class="layui-form-item" style="margin-bottom: 20px;">
+                    <label class="layui-form-label">原密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password_old" required  lay-verify="required" placeholder="必填" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-bottom: 20px;">
+                    <label class="layui-form-label">新密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password" required lay-verify="required|pass" placeholder="必填" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-bottom: 20px;">
+                    <label class="layui-form-label">确认密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="password_t" required lay-verify="required|pass" placeholder="必填" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display: none;">
+                    <button id="addBtn" lay-submit lay-filter="addBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="../js/page/index.js"></script>
+</html>

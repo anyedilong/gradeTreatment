@@ -1,0 +1,101 @@
+.layui-form-label{
+    width: 90px;
+}
+.layui-input-block{
+    margin: 0 30px 15px 120px;
+}
+.myTimeline{
+    margin-top: 25px;
+}
+.myTimeline .layui-text{
+    color: #BDC6D9;
+}
+.myTimeline .layui-timeline-axis{
+    background: url("../../img/bluecircle.png");
+    background-size: 14px 14px;
+    width: 14px;
+    height: 14px;
+    color: transparent;
+    left: -1px;
+}
+.myTimeline .layui-timeline-title{
+    margin-bottom: 5px;
+}
+.myTimeline .layui-timeline-item:before{
+    background: #3B76F6;
+    width: 2px;
+}
+.myTimeline .layui-timeline-item{
+    padding-bottom: 100px;
+}
+.mould-li {
+    text-align: center;
+    line-height: 36px;
+    box-sizing: border-box;
+    color: #9BA3B2;
+    border: 1px solid #E8EAED;
+    border-left: none;
+    border-radius:0px 4px 4px 0px;
+    margin-top: 1em;
+    cursor: pointer;
+}
+.mould-li.mould-act {
+    color: #3B76F6;
+    border-color: #3B76F6;
+}
+.mould-li:hover {
+    color: #3B76F6;
+    border-color: #3B76F6;
+}
+.mould-block textarea {
+    height: 120px;
+}
+
+.mouldpop-ul {
+    padding: 20px;
+}
+.mouldpop-li {
+    padding: 15px;
+    border: 1px solid #E8EAED;
+    border-radius: 4px;
+    font-size: 14px;
+    position: relative;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.mouldpop-li:hover {
+    border-color: #3B76F6;
+}
+.mouldpop-li:hover .card-btn {
+    display: block;
+}
+.mouldpop-act {
+    border-color: #3B76F6;
+}
+.mouldpop-tit {
+    word-break: break-all;
+    color: #43464D;
+    margin-bottom: 10px;
+}
+.mouldpop-cont {
+    color: #9BA3B2;
+    word-break: break-all;
+}
+.card-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+}
+.zdCode {
+    cursor: pointer;
+}
+.layui-form-radio>i:hover, .layui-form-radioed>i {
+    color: #3B76F6;
+}
+.layui-laypage a, .layui-laypage span {
+    padding: 0 12px;
+}
+.popup-box .pop-table {
+    width: 520px;
+}

@@ -1,0 +1,44 @@
+<!--首页 home.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <script src="../js/page/commen.js"></script>
+    <script src="../js/page/index.js"></script>
+    <script>
+        // 院领导院医生访问home1，卫健委访问home2
+        $(function () {
+            // var roleCode = localStorage.getItem('roleCode');
+            var roleType = localStorage.getItem('roleType');
+            // if(roleCode == '001'){
+            //     $('#homeIframe').attr('src','home2.html');
+            // }else if(roleCode == '002' || roleCode == '003'){
+            //     $('#homeIframe').attr('src','home1.html');
+            // }
+            parent.gethome($('#homeIframe'), roleType);
+        });
+    </script>
+    <style>
+        .homeBox {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+            overflow-x: hidden; overflow-y: auto;
+        }
+        #homeIframe {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; bottom: 0; left: 0; right: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="homeBox">
+        <iframe src="" id="homeIframe" allowTransparency="true" frameborder="no" border="0" ></iframe>
+    </div>
+</body>
+
+</html>

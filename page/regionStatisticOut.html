@@ -1,0 +1,68 @@
+<!--regionStatisticOut.html 区域转出统计-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计分析-区域转出统计</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        .charts{
+            background: #fff;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <div class="page_title">区域转出统计</div>
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <!--年份必须有一个默认值，默认为当年-->
+                        <select name="year" lay-filter="years" id="yearSel"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <select name="month" lay-filter="sss" id="monthSel">
+                            <option value="">月份</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <select name="orgID" lay-search="" lay-filter="orgID" id="orgSel">
+                            <option value="">医院</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+            </div>
+        </form>
+        <div class="data-card charts_box">
+            <div class="layui-row layui-col-space20">
+                <div class="layui-col-md8">
+                    <div class="charts" id="linecharts"></div>
+                </div>
+                <div class="layui-col-md4">
+                    <div class="charts" id="piecharts"></div>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="charts" id="barcharts"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../js/page/regionStatisticOut.js"></script>
+</html>

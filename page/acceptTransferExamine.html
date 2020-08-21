@@ -1,0 +1,607 @@
+<!--acceptTransfer.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接收转入列表</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .layui-form-label{
+            width: 90px;
+        }
+        .layui-input-block{
+            margin: 0 30px 15px 120px;
+        }
+        .myTimeline{
+            margin-top: 25px;
+        }
+        .myTimeline .layui-text{
+            color: #BDC6D9;
+        }
+        .myTimeline .layui-timeline-axis{
+            background: url("../img/bluecircle.png");
+            background-size: 14px 14px;
+            width: 14px;
+            height: 14px;
+            color: transparent;
+            left: -1px;
+        }
+        .myTimeline .layui-timeline-title{
+            margin-bottom: 5px;
+        }
+        .myTimeline .layui-timeline-item:before{
+            background: #3B76F6;
+            width: 2px;
+        }
+        .myTimeline .one.layui-timeline-item:before{
+            display: none;
+        }
+        .myTimeline .layui-timeline-item{
+            padding-bottom: 100px;
+        }
+        .layui-select-disabled .layui-disabled {
+            color: rgb(84, 84, 84)!important;
+        /*    cursor: auto;*/
+        /*!important: ;*/
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <form class="layui-form" action="" lay-filter="formData">
+            <div class="page_title"><span id="titName"></span>转入申请
+                <div class="fr manage">
+                    <button type="submit" class="layui-btn layui-btn-danger layui-btn-sm btn-submit btn-orange" lay-submit="" lay-filter="shenhe" audit="2">驳回</button>
+                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm btn-submit btn-green" lay-submit="" lay-filter="shenhe" audit="1">通过</button>
+                </div>
+                <div class="fr manageHos">
+<!--                    <button type="submit" class="layui-btn layui-btn-danger layui-btn-sm btn-submit btn-orange" lay-submit="" lay-filter="search">回转</button>-->
+                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm btn-submit btn-green" lay-submit="" lay-filter="reception">接收</button>
+                </div>
+            </div>
+            <ul class="left_tab" id="leftTab">
+                <li class="active"><a href="#zz">转诊信息</a></li>
+                <li><a href="#hz">患者信息</a></li>
+                <li><a href="#lc">临床信息</a></li>
+            </ul>
+            <div class="layui-row layui-col-space20 rightTab">
+                <div class="layui-col-md9">
+                    <div class="outer-container">
+                        <div class="page_card">
+                            <div class="layui-row layui-form-item" id="zz">
+                                <label class="layui-form-label com-tit">转诊信息</label>
+                            </div>
+                            <div class="layui-row layui-form-item">
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">所在医院</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="orgName" lay-verify="required" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">所在科室</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="depName" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">医生姓名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="docName" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">接诊医院</label>
+                                    <div class="layui-input-block">
+                                        <!--<input type="text" name="accOrgName" lay-verify="required" autocomplete="off" class="layui-input" disabled>-->
+                                        <input type="text" name="accOrgName" lay-verify="required" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">接诊科室</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="accDepName" autocomplete="off" class="layui-input" disabled>
+<!--                                        <select name="accDepId" lay-filter="aihao">-->
+<!--                                            <option value=""></option>-->
+<!--                                            <option value="0">写作</option>-->
+<!--                                            <option value="1" selected="">内科</option>-->
+<!--                                        </select>-->
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">接诊医生</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="accDocName" autocomplete="off" class="layui-input" disabled>
+<!--                                        <select name="accDocName" lay-filter="aihao">-->
+<!--                                            <option value=""></option>-->
+<!--                                            <option value="0">写作</option>-->
+<!--                                            <option value="1" selected="">张医生</option>-->
+<!--                                        </select>-->
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">就诊日期</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="checkTime" class="layui-input date_scope" id="laydate" placeholder=" - " disabled>
+                                        <i class="iconfont iconrili-tianchong data_icon m-gray2"></i>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">诊断编码</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="diaCode" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">转诊原因</label>
+                                    <div class="layui-input-block">
+<!--                                        <input type="text" name="refPurpose" lay-verify="required" autocomplete="off" class="layui-input" disabled>-->
+                                        <select name="refPurpose" lay-filter="refPurpose" disabled>
+                                            <option value=""></option>
+                                            <option value="0">确诊疾病</option>
+                                            <option value="1">无法确诊病情，需进一步确诊病情</option>
+                                            <option value="2">专科复诊</option>
+                                            <option value="3">随访要求</option>
+                                            <option value="4">遵循上级规定</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">初步印象</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="firstImpression" placeholder="请填写您对该患者的初步诊断信息" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-form-item" id="hz">
+                                <label class="layui-form-label com-tit">患者信息</label>
+                                <div class="layui-input-block" id="getDangan">
+                                    <span class="fr m-orange cursorP"><i class="iconfont iconyanjing"></i>查看居民健康档案浏览器</span>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-form-item">
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">患者姓名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="name" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">身份证号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sfzh" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">出生日期</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="birthday" class="layui-input date_scope" placeholder=" - " disabled>
+                                        <i class="iconfont iconrili-tianchong data_icon m-gray2"></i>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">患者性别</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="sex" autocomplete="off" class="layui-input" disabled>
+<!--                                        <select name="sex" lay-filter="aihao">-->
+<!--                                            <option value="">性别</option>-->
+<!--                                            <option value="0">男</option>-->
+<!--                                            <option value="1">女</option>-->
+<!--                                        </select>-->
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">患者年龄</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="age" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">患者身高(cm)</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="height" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">患者体重(Kg)</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="weight" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">联系方式</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="telephone" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">家属联系方式</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="familyPhone" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">档案编号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="dno" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">医保类型</label>
+                                    <div class="layui-input-block">
+                                        <select name="healthType" lay-filter="aihao" disabled id="yblx">
+<!--                                            <option value=""></option>-->
+<!--                                            <option value="0">写作</option>-->
+<!--                                            <option value="1" selected="">内科</option>-->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">医保卡号</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="healthCard" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">省</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="provinceName" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">市</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="cityName" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">县/区</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="countyName" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <label class="layui-form-label">镇/街道</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="townName" autocomplete="off" class="layui-input" disabled>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md8">
+                                    <label class="layui-form-label">详细地址</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="adress" disabled autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">患者知情同意书</label>
+                                    <div class="layui-input-block">
+                                        <div class="tys">
+<!--                                            <a target="_blank" href="#" class="detaila">-->
+<!--                                                <img src="../img/pdf.png" alt="">-->
+<!--                                                <span id="hzzqs"></span>-->
+<!--                                            </a>-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">相关附件</label>
+                                    <div class="layui-input-block fuj">
+<!--                                        <div>-->
+<!--                                            <img src="../img/pdf.png" alt="">-->
+<!--                                            <span>附件名称.pdf</span>-->
+<!--                                        </div>-->
+<!--                                        <div>-->
+<!--                                            <img src="../img/pdf.png" alt="">-->
+<!--                                            <span>附件名称.pdf</span>-->
+<!--                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-row layui-form-item" id="lc">
+                                <label class="layui-form-label com-tit">临床信息</label>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">主诉</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="zs" placeholder="主诉" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">现病史</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="xbs" placeholder="现病史" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">既往史</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="jwz" placeholder="既往史" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">过敏史</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="gms" placeholder="过敏史" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">家族史</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="jzs" placeholder="家族史" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">查体</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="ct" placeholder="查体" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">辅助检查</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="fzjc" placeholder="辅助检查" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md12">
+                                    <label class="layui-form-label">治疗经过</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="zljg" placeholder="此项为必填项" lay-verify="required" class="layui-textarea" disabled></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                    <div class="outer-container">
+                        <div class="page_card">
+                        <div class="com-tit">历次转出记录</div>
+                        <ul class="layui-timeline myTimeline">
+<!--                            <li class="layui-timeline-item">-->
+<!--                                <i class="layui-timeline-axis"></i>-->
+<!--                                <div class="layui-timeline-content layui-text">-->
+<!--                                    <div class="layui-timeline-title">2019-02-13  14:50:23</div>-->
+<!--                                    <p>雅居园社区卫生专转入山东省立医院</p>-->
+<!--                                </div>-->
+<!--                            </li>-->
+                        </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="popup-box" id="shenheBox" style="display: none">
+            <form class="layui-form" lay-filter="shenheform" action="" id="shenheform">
+                <div class="layui-form-item">
+                    <div style="margin-bottom: 20px">驳回原因</div>
+                    <div>
+                        <textarea name="auditReason" lay-verify="required|textMax" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display: none;">
+                    <button id="addBtn" lay-submit lay-filter="addBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            layui.use(['form','laydate'], function(){
+                var laydate = layui.laydate;
+                var form = layui.form;
+                form.verify({
+                    textMax: function (value, item) {
+                        if (value.length > 400) {
+                            return '驳回原因字数不得超过400字'
+                        }
+                    }
+                });
+                function getUrlParam(key) {
+                    var url = window.location.search;
+                    var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+                    var result = url.substr(1).match(reg);
+                    return result ? decodeURIComponent(result[2]) : null;
+                }
+                var edit = getUrlParam("status")
+                var ids = getUrlParam("id") //回转标识
+                if(edit == 'detail'){
+                    $(".manage").hide()
+                    $(".manageHos").hide()
+                }else if(edit == 'shenhe'){
+                    $(".manageHos").hide()
+                }else if(edit == 'edit'){
+                    $(".manage").hide()
+                }
+                $('#leftTab li').click(function () {
+                    $(this).addClass('active').siblings().removeClass('active');
+                });
+                laydate.render({
+                    elem: '#laydate'
+                });
+                getYblx();
+                function getYblx(){
+                    var jsonParam={};
+                    getAjax('/sys/dict/getYblxDict', jsonParam, function (resultMsg) {
+                        if(resultMsg.retCode == '0'){
+                            var html='';
+                            $.each(resultMsg.data, function (i, item) {
+                                html+=' <option value="'+item.code+'">'+item.name+'</option>'
+                            });
+                            $("#yblx").append(html);
+                            form.render('select');
+                        }
+                    });
+                }
+                // 获取详情
+                var jsonParam = {
+                    id: ids,
+                };
+                function getDetails(){
+                    getAjax('/turnin/getTurnInDetail',jsonParam,function (resultMsg) {
+                        $('#titName').html(resultMsg.data.name);
+                        var html='';
+                        var strZ = '';
+                        $.each(resultMsg.data.imageList,function (i, item) {
+                            if(item.fileType == '1'){
+                                strZ += '<a target="_blank" href="'+item.fileUrl+'">';
+                                strZ += '<img src="../img/pdf.png" alt="">';
+                                strZ += '<span>'+item.fileName+'</span>';
+                                strZ += '</a>';
+                            }else if(item.fileType == '2'){
+                                html += '<div>' +
+                                    '<a target="_blank" href="'+item.fileUrl+'">' +
+                                    '<img src="../img/pdf.png" alt="">' +
+                                    '<span>'+item.fileName+'</span>' +
+                                    '</a>' +
+                                    '</div>'
+                            }
+                            $(".tys").html(strZ);
+                            $(".fuj").html(html)
+                        });
+                        form.val("formData", resultMsg.data);
+                        form.render(); //更新全部
+                        // 历次转诊记录
+                        if(resultMsg.data.historyTurnOut){
+                            var recordList = resultMsg.data.historyTurnOut;
+                            var str = '';
+                            $.each(recordList,function (i, item) {
+                                if(recordList.length == 1){
+                                    str += '<li class="layui-timeline-item one">';
+                                    str += '<i class="layui-timeline-axis"></i>';
+                                    str += '<div class="layui-timeline-content layui-text">';
+                                    str += '<div class="layui-timeline-title">'+item.turnTime+'</div>';
+                                    str += '<p>'+item.outOrgName+'转入'+item.inOrgName+'</p>';
+                                    str += '</div>';
+                                    str += '</li>';
+                                }else{
+                                    str += '<li class="layui-timeline-item">';
+                                    str += '<i class="layui-timeline-axis"></i>';
+                                    str += '<div class="layui-timeline-content layui-text">';
+                                    str += '<div class="layui-timeline-title">'+item.turnTime+'</div>';
+                                    str += '<p>'+item.outOrgName+'转入'+item.inOrgName+'</p>';
+                                    str += '</div>';
+                                    str += '</li>';
+                                }
+
+                            });
+                            $('.myTimeline').html(str);
+                        }else{
+                            $('.myTimeline').html('<span class="m-gray4">暂无记录</span>');
+                        }
+                    });
+                    // if($('.myTimeline'))
+                }
+                getDetails();
+                var audit = '';
+                form.on('submit(shenhe)', function(data){
+                    audit = $(this).attr('audit');
+                    if (audit == '2'){
+                        layer.open({
+                            type:1,
+                            title: '驳回',
+                            skin: 'my-layui-layer', //样式类名
+                            area: ['460px', '300px'],
+                            content: $('#shenheBox'),
+                            btn: ['关闭', '确认'],
+                            btn1: function (index) {
+                                layer.close(index);
+                            },
+                            btn2: function (index) {
+                                $('#addBtn').click();
+                                return false;
+                            }
+                        });
+                    }else{
+                        layer.open({
+                            type:1,
+                            title: '审核',
+                            skin: 'my-layui-layer', //样式类名
+                            area: ['360px', '180px'],
+                            content:  '<div style="padding: 20px;text-align: center">您确定要进行审核通过吗？</div>',
+                            btn: ['关闭', '确认'],
+                            btn1: function (index) {
+                                layer.close(index);
+                            },
+                            btn2: function (index) {
+                                // $('#addBtn').click();
+                                var shenheObj = {
+                                    id: ids,
+                                    audit: audit,
+                                    auditReason: '',
+                                };
+                                getAjax('/turnin/auditTurnIn', shenheObj, function (resultMsg) {
+                                    window.location.href = 'acceptTransfer.html';
+                                });
+                                return false;
+                            }
+                        });
+                    }
+                    return false;
+                });
+                //接收
+                form.on('submit(reception)', function (data) {
+                    layer.open({
+                        type:1,
+                        title: '提示',
+                        skin: 'my-layui-layer', //样式类名
+                        area: ['320px', '180px'],
+                        content: '<div style="padding: 20px;text-align: center;">是否确认接收?</div>',
+                        btn: ['关闭', '确认'],
+                        btn1: function (index) {
+                            layer.close(index);
+                        },
+                        btn2: function (index) {
+                            getAjax('/turnin/receiveTurnIn', {id:ids}, function (resultMsg) {
+                                window.location.href = 'acceptTransfer.html';
+                            });
+                            return false;
+                        }
+                    });
+                    return false;
+                });
+                $('#addBtn').click(function () {
+                    form.on('submit(addBtn)', function(data){
+                        console.log(audit);
+                        console.log(data.field.auditReason);
+                        var shenheObj = {
+                            id: ids,
+                            audit: audit,
+                            auditReason: data.field.auditReason,
+                        };
+                        getAjax('/turnin/auditTurnIn', shenheObj, function (resultMsg) {
+                            window.location.href = 'acceptTransfer.html';
+                        });
+                    });
+                });
+                $('#getDangan').click(function () {
+                    var jsonParam = new Object();
+                    jsonParam.doctorCode = "75";
+                    jsonParam.doctorName = "王艳玲";
+                    $.ajax({
+                        type: 'POST',
+                        dataType: "json",
+                        async: false,
+                        contentType: 'application/json',
+                        url: 'http://192.168.2.2:8073/api/login/healthBrowser/index',
+                        data: JSON.stringify(jsonParam),
+                        beforeSend: function (XMLHttpRequest) {
+                            XMLHttpRequest.setRequestHeader("orgId", "a9211734e03d47e9a6968ddca24e9c06");
+                            XMLHttpRequest.setRequestHeader("authCode", "E1A477ED046549AA9A9D5FFE1EFA13C1");
+                        },
+                        success: function (resultMsg) {
+                            if(resultMsg.retCode == 0){
+                                window.open(resultMsg.data + '&sfzh=' + $('input[name=sfzh]').val());
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                        }
+                    });
+                })
+            });
+        })
+    </script>
+</body>
+</html>

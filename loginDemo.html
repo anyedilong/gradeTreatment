@@ -1,0 +1,337 @@
+<!--登录-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预约挂号系统后台管理</title>
+    <link rel="stylesheet" href="js/layui/css/layui.css">
+    <link rel="stylesheet" href="css/base.css">
+    <script type="text/javascript" src="js/layui/layui.js" ></script>
+    <script src="js/cryptojs.js"></script>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        .login_btn{
+            text-align: center;
+        }
+        .layui-btn-primary:hover {
+            border-color: #1E9FFF;
+        }
+        html,body {
+            width: 100%;height: 100%;
+            padding: 0;margin: 0; overflow: hidden;
+            background: url("img/login_bg.png") no-repeat;
+            background-size:100% 100%;
+        }
+        .loginBox{
+            width: 600px;
+            margin: 8% auto 0;
+        }
+        .head_box{
+            text-align: center;
+        }
+        .loginForm {
+            width: 600px;
+            height: 380px;
+            padding: 50px 70px;
+            border-radius: 4px;
+            background: #fff;
+        }
+        .formTit2 {
+            margin: 30px 0 40px;
+            color:#fff; font-size: 30px;
+        }
+        .login_btn{
+            margin: 40px 0 12px !important;
+        }
+        .layui-input-block{
+            margin-left: 0;
+        }
+        .layui-btn-normal{
+            width: 100%;
+            background: #3B76F6;
+        }
+        .yan_input{
+            display: inline-block;
+            width: 340px;
+        }
+        .yan_box{
+            height: 38px;
+            float: right;
+        }
+        .layui-form-item{
+            margin-bottom: 20px;
+        }
+        .layui-form-checked[lay-skin=primary] i{
+            border-color: #3B76F6!important;
+            background-color: #3B76F6;
+        }
+        .layui-form-checkbox[lay-skin=primary] span{
+            color: #3B76F6 !important;
+        }
+        .forgetPsw{
+            float: right;
+            display: inline-block; height: 36px; line-height: 36px;
+            color: #3B76F6;
+        }
+        .logo{
+            color: #fff;font-size: 36px;
+            height: 50px;line-height: 50px;
+        }
+        .logo img{
+            height: 50px;
+            margin: -8px 15px 0 0;
+        }
+        /*#login_showPwd{*/
+        /*display: none;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div class="loginBox">
+    <div class="head_box">
+        <div class="logo"><img src="img/logo.png" alt=""><span>分级诊疗</span></div>
+        <div class="formTit2">欢迎登录博乐通分级诊疗系统</div>
+    </div>
+    <div class="loginForm">
+        <div class="formbox">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="text" name="username" required  lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input" id="input_t">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <!--<input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input" id="login_showPwd">-->
+                        <!--<input type="text" value="请输入密码" class="topPw input">-->
+                        <input type="text" value="密码" name="password" placeholder="密码" autocomplete="off" class="layui-input input_p topPw">
+                        <input type="password" name="password"  placeholder="密码" autocomplete="off" class="layui-input input_p" id="login_showPwd">
+                    </div>
+                    <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+                </div>
+                <div class="layui-form-item" id="canvasIe">
+                    <div class="layui-input-block">
+                        <input type="text" name="yanz" id="code_input" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input yan_input">
+                        <div class="yan_box" id="v_container"></div>
+                    </div>
+                    <!--<div class="layui-form-mid layui-word-aux">辅助文字</div>-->
+                </div>
+                <div class="login_btn layui-form-item">
+                    <button type="button" class="layui-btn layui-btn-normal" id="my_button" lay-submit lay-filter="loginBtn">登录</button>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="记住用户名">
+                        <span class="forgetPsw m-blue1">忘记密码</span>
+                    </div>
+                </div>
+            </form>
+            <div id = "support" style="display: none"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/jquery-1.8.0.js" ></script>
+<script type="text/javascript" src="js/page/login_rand.js" ></script>
+<script>
+
+    $(function () {
+        function isSupportPlaceholder() {
+            var input = document.createElement('input');
+            return 'placeholder' in input;
+        }
+        $(function() {
+            if(!isSupportPlaceholder()) {
+                // jQuery('[placeholder]').focus(function() {
+                // $('[placeholder]').focus(function() {
+                $("#input_t").focus(function() {
+                    var input = jQuery(this);
+                    if (input.val() == input.attr('placeholder')) {
+                        input.val('');
+                        input.removeClass('placeholder');
+                    }
+                    input.css("color","#555");
+                }).blur(function() {
+                    var input = jQuery(this);
+                    if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                        input.addClass('placeholder');
+                        input.val(input.attr('placeholder'));
+                        input.css("color","#888");
+                    }
+                }).blur().parents('form').submit(function() {
+                    jQuery(this).find('[placeholder]').each(function() {
+                        var input = jQuery(this);
+                        if (input.val() == input.attr('placeholder')) {
+                            input.val('');
+                        }
+                    })
+                });
+                $("#login_showPwd").hide()
+                $("#login_showPwd").attr("placeholder","")
+                //设置提示文字js
+                $(".input_p") //所有样式名中含有input的input
+                    .each(function() {
+                        var oldVal = $(this).val(); //默认的提示性文本
+                        $(this).css({
+                            "color": "#888888"
+                        })
+                            .focus(function() {
+                                if ($(this).val() != oldVal) {
+                                    $(this).css({
+                                        "color": "#000"
+                                    })
+                                } else {
+                                    $(this).val("").css({
+                                        "color": "#888888"
+                                    })
+                                }
+                            })
+                            .blur(function() {
+                                if ($(this).val() == "") {
+                                    $(this).val(oldVal).css({
+                                        "color": "#888888"
+                                    })
+                                }
+                            })
+                            .keydown(function() {
+                                $(this).css({
+                                    "color": "#000"
+                                })
+                            })
+                    })
+                //设置password框js
+                $('.topPw ').focus(function() {
+                    $("#login_showPwd").show()
+                    $(this).css('display', 'none').siblings('#login_showPwd').focus();
+                });
+                $('#login_showPwd').blur(function() {
+                    if ($(this).val() == '') {
+                        $(this).siblings('.topPw ').css('display', 'block');
+                        $("#login_showPwd").hide()
+                    }
+                })
+            }else{
+                $(".topPw").hide()
+            }
+        });
+        var support = document.getElementById('support');
+        var ieVersions = true
+        try {
+            var context = document.createElement('canvas').getContext('2d');
+            support.innerHTML = 'chorme support canvas!';
+            $("#canvasIe").show()
+            ieVersions = true
+        } catch(ex) {
+            support.innerHTML = 'chorme do not support canvas!';
+            $("#canvasIe").hide()
+            ieVersions = false
+        }
+        getlogo()
+        function getlogo () {
+            $.ajax({
+                type: 'get',
+                dataType: "jsonp",
+                jsonp: "callback",//服务端用于接收
+                async: false,
+                contentType: 'application/json',
+                url: 'http://192.168.1.81:8085/sys/platform/show',
+                data: {},
+                success: function (resultMsg) {
+                    if (resultMsg.retCode == 0) {
+                        $(".logo").html('<img src="'+resultMsg.data.logo+'" alt=""><span>'+resultMsg.data.name+'</span>')
+                    } else {
+                        $(".logo").html('<img src="img/logo.png" alt=""><span>分级诊疗</span>')
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert('加载资源失败');
+                }
+            });
+        }
+        layui.use('form', function(){
+            var form = layui.form;
+            var verifyCode = new GVerify("v_container");
+            //监听提交
+            form.on('submit(loginBtn)', function(data){
+                console.log(data.field)
+                var jsonParam = {
+                    username: data.field.username,
+                    password: data.field.password
+                }
+                if(ieVersions){
+                    console.log("需要验证")
+                    var res = verifyCode.validate(document.getElementById("code_input").value);
+                    console.log(data.field.password)
+                    // if(res){
+                    loginFun(jsonParam);
+                    // }else{
+                    //     layer.msg('请输入正确的验证码', {icon: 5,time:1000,anim: 6});
+                    // }
+                }else{
+                    console.log(data.field.password)
+                    console.log("不需要验证")
+                    loginFun(jsonParam);
+                }
+
+            });
+
+            function encrypt(word){
+                var key = CryptoJS.enc.Utf8.parse("BhZ+FDMne1+xfU7kIihiLHd-EtXwYiKE");
+                var srcs = CryptoJS.enc.Utf8.parse(word);
+                var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+                return encrypted.toString();
+            }
+            function loginFun (data) {
+                console.log(data)
+                $.ajax({
+                    type: 'get',
+                    dataType: "jsonp",
+                    jsonp: "callback",//服务端用于接收
+                    async: false,
+                    contentType: 'application/json',
+                    url: 'http://192.168.1.81:8085/login/oauth',
+                    data: data,
+                    success: function (resultMsg) {
+                        console.log(resultMsg)
+                        if (resultMsg.retCode == 0) {
+                            var authToken = encrypt('teament' + ',' + data.username + ',' + resultMsg.data);
+                            // var authToken = encrypt('client' + ',' + data.username + ',' + resultMsg.data);
+                            localStorage.setItem('userName', data.username);
+                            localStorage.setItem('authTokenTreat', authToken);
+                            localStorage.setItem('oldPass', data.password);
+                            window.location.href = "page/index.html";
+                        } else {
+                            layer.open({
+                                id: 'login',
+                                type: 1,
+                                title: '提示',
+                                closeBtn: 0,
+                                skin: 'my-layui-layer', //样式类名
+                                area: ['360px', '180px'],
+                                shadeClose: true,
+                                shade: 0.2,
+                                content: '<div style="padding: 20px;">' + resultMsg.retMsg + '</div>', //iframe的url
+                                btn: ['关闭'],
+                            });
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        alert('加载资源失败');
+                    }
+                });
+            }
+            $("#remember").click(function () {
+                console.log( $("#remember").attr("checked")=="checked";)
+            })
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!--统计分析-转入统计-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计分析-转入统计</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        *{
+           box-sizing: border-box;
+        }
+        .pie_box_t{
+            width: 32.6%;
+            float: left;
+            margin-bottom: 20px;
+        }
+        .mg_r{
+            margin-right: 1%;
+        }
+        .charts_bar{
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="pageBox">
+    <div class="page_title">转入统计</div>
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <div class="layui-form-item">
+                <!--<label class="layui-form-label">年度</label>-->
+                <div class="layui-input-inline">
+                    <select name="year" lay-search="" lay-filter="hospitalSel" id="yearList">
+                        <option value="">年度</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-form-item">
+                <!--<label class="layui-form-label">月度</label>-->
+                <div class="layui-input-inline">
+                    <select name="month" lay-search="" lay-filter="hospitalSel" id="monthList">
+                        <option value="">月度</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-form-item">
+                <!--<label class="layui-form-label">科室</label>-->
+                <div class="layui-input-inline">
+                    <select name="keshi" lay-search="" lay-filter="hospitalSel" id="deptList">
+                        <option value="">科室</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+        </div>
+    </form>
+    <div class="data-card charts_box">
+        <div class="pad_box">
+            <div class="com-tit blueblack">科室转诊统计</div>
+            <div class="charts_bar" id="barcharts"></div>
+        </div>
+        <div class="pie_box">
+            <div class="pad_box pie_box_t mg_r">
+                <div class="com-tit blueblack">转入&回转占比</div>
+                <div class="charts_pie" id="zhPie"></div>
+            </div>
+            <div class="pad_box pie_box_t mg_r hz">
+                <div class="com-tit blueblack">科室转入占比</div>
+                <div class="charts_pie" id="ksZrPie"></div>
+            </div>
+            <div class="pad_box pie_box_t">
+                <div class="com-tit blueblack">科室回转占比</div>
+                <div class="charts_pie" id="ksHzPie"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="../js/page/statisticInto.js"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>医院转诊关系</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        .charts_box{
+            height: 92%;
+        }
+        .mgin_r{
+            padding-right: 20px;
+            height: 100%;position: relative;
+        }
+        .pad_box {
+            padding: 20px;
+            height: 100%;
+        }
+        .layui-inline{
+            margin-bottom: 10px;
+        }
+        .layui-badge{
+            background: #F39800; margin-left: 10px;
+        }
+        .left_hospital li{
+            padding: 10px 15px;cursor: pointer;
+        }
+        .active{
+            background: #F2F4F7; border-radius: 4px;
+        }
+
+        h2{
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .refer .eTit{
+            float: left;
+            padding-right: 20px;
+        }
+        .eDetail{
+            float: left;
+            width: 80%;
+        }
+        .eDetail .refer_list{
+            float: left;padding: 20px 15px 20px 32px;
+            width: 250px; margin: 0 15px 15px 0;height: 150px;
+            border:1px solid #F5F5F5;
+            display: table;
+            position: relative;cursor: pointer;
+        }
+        .ishow{
+            border:1px solid #3B76F6 !important;
+        }
+        .eDetail .refer_list i{
+            margin-right: 1%;
+        }
+        .tel{
+            margin: 10px 0 5px;
+        }
+        .address{
+            float: left;
+            width: 88%;
+            height: 60px; overflow: hidden;
+        }
+        .to_address_box i{
+            float: left;
+        }
+        .det{
+            display: none;
+            height: 18px;
+        }
+        .refer_list span.layui-badge , .det{
+            position: absolute;
+            top:0px;right: 0px;
+        }
+        .getAdd{
+           font-size: 18px;
+            display: table-cell; vertical-align: middle;
+            line-height: 40px;text-align: center;padding-left: 20px;
+        }
+        .getAdd i{
+            font-size: 35px;
+        }
+        .add_box1 , .add_box2{
+            padding: 20px 30px;
+            background: #fff;
+        }
+        .cont ,.pad_box_right{
+            height: 100%;
+        }
+        .add_box1{
+            min-height: 38%;
+            margin-bottom: 2%;
+        }
+        .add_box2{
+            min-height: 59.5%;
+        }
+        #getPage{
+            position: absolute;bottom: 0;left:0;right:20px;height: 40px;border-top: 1px solid #F5F5F5;
+        }
+        #getPage .layui-laypage a{
+            display: inline-block;
+            width: 50%;text-align: center;height: 40px;line-height: 40px;
+            cursor: pointer;box-sizing: border-box;border: none;
+        }
+        #getPage .layui-laypage{
+            display: block;margin: 0;
+        }
+        .layui-form-checked[lay-skin=primary] i{
+            border-color: #3B76F6!important;
+            background-color: #3B76F6;
+        }
+    </style>
+</head>
+<body>
+<div class="pageBox">
+    <div class="page_title">医院转诊关系</div>
+    <div class="layui-row data-card charts_box">
+        <div class="layui-col-xs3 mgin_r">
+            <div class="grid-demo grid-demo-bg1 pad_box">
+                <form class="layui-form" action="">
+                    <div class="layui-inline">
+                        <div class="layui-form-item">
+                            <!--<label class="layui-form-label">科室</label>-->
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="医院名称/机构编码" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                    </div>
+                </form>
+                <ul class="left_hospital">
+                    <!--<li class="active">山东省立医院(00213)<span class="layui-badge">61728</span></li>-->
+                    <!--<li>千佛医院(00213)<span class="layui-badge">61728</span></li>-->
+                    <li>暂无数据</li>
+                </ul>
+                <div id="getPage"></div>
+            </div>
+        </div>
+        <div class="layui-col-xs9 pad_box_right">
+            <div class="grid-demo cont">
+                <div class="add_box1 bd_r">
+                    <h2 id="hospitalName">暂无数据</h2>
+                    <div class="refer">
+                        <div class="eTit">上级转诊医院</div>
+                        <div class="eDetail">
+                            <div id="getReferList">
+                                <!--<div class="bd_r refer_list">-->
+                                    <!--<div>山东省立医院</div>-->
+                                    <!--<div class="tel"><i class="iconfont m-blue1">&#xe63a;</i>15165197890</div>-->
+                                    <!--<div class="to_address_box"><i class="iconfont m-blue1">&#xe634;</i><div class="address">山东省济南市高新区舜华路南口舜泰 广场6号楼401A</div><div class="clear"></div></div>-->
+                                    <!--<span class="layui-badge">61728</span>-->
+                                    <!--<img src="../img/btn_delete.png" alt="" class="det">-->
+                                <!--</div>-->
+                            </div>
+                           <div class="bd_r refer_list add_hospital">
+                                <div class="getAdd m-gray4">
+                                    <i class="iconfont fl m-gray2">&#xe623;</i><span class="fl">添加转诊医院</span>
+                                </div>
+                           </div>
+                       </div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="add_box2 bd_r">
+                    <h2>转诊关系图例</h2>
+                    <div class="charts" id="upCharts"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popup-box" id="zhenduanpop">
+    <form class="layui-form" action="" lay-filter="addform">
+        <div class="layui-form-item">
+            <input type="text" name="mouldtit" placeholder="输入医院名称/机构编码"  autocomplete="off" lay-verify="required" class="layui-input fl searchInp">
+            <input type="text" class="form-control" style="display:none">
+            <button lay-submit lay-filter="searchCode" type="button" class="layui-btn layui-btn-normal fr">搜索</button>
+        </div>
+    </form>
+    <div class="data-card charts_box pop-table">
+            <table class="layui-hide" id="table" lay-filter="dataList" lay-skin="row"></table>
+        <div id="laypage"></div>
+    </div>
+</div>
+<script type="text/javascript" src="../js/page/referralRelationship.js" ></script>
+</body>
+</html>

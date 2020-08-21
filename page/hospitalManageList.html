@@ -1,0 +1,165 @@
+<!--hospitalManageList.html 医院管理-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>医院管理列表</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .popup-box .layui-form-item{
+            margin-bottom: 20px;
+        }
+        .popup-box {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <div class="page_title">医院管理
+            <div class="tableAddBtn fr cursorP" id="doctorAdd">
+                <!--<i class="iconfont fl">&#xe61e;</i>-->
+                <!--<span class="fl">添加医院</span>-->
+            </div>
+        </div>
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="codeOrName" autocomplete="off" class="layui-input" placeholder="机构编码/医院名称">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+            </div>
+        </form>
+        <div class="data-card charts_box">
+            <table class="layui-hide" id="table" lay-filter="dataList" lay-skin="row"></table>
+            <script type="text/html" id="switchBtn">
+                <!--状态  0启用 1禁用-->
+                <input type="checkbox" name="status" status="{{d.status}}" value="{{d.id}}" lay-skin="switch" lay-filter="statusByn" {{ d.status == '0' ? 'checked' : '' }}>
+            </script>
+            <script type="text/html" id="barDemo">
+                {{# for (var i = 0; i < parent.menuYYGL.length; i++) {  }}
+                    {{# if (parent.menuYYGL[i].name != '禁用(启用)' && parent.menuYYGL[i].name != '新建') {  }}
+                        <a class="m-blue1" lay-event="{{parent.menuYYGL[i].name}}">{{parent.menuYYGL[i].name}}</a>
+                    {{# }  }}
+                {{# }  }}
+                <a class="m-blue1" lay-event="jumpPage">医院转诊关系</a>
+            </script>
+            <div id="laypage"></div>
+        </div>
+    </div>
+    <!--弹框-->
+    <div class="popup-box page_content" id="popup-box">
+        <form class="layui-form" lay-filter="addform" action="" id="addform">
+            <div class="layui-form-item">
+                <label class="layui-form-label">机构编码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="orgCode" lay-verify="required|yymcLen" autocomplete="off" class="layui-input" placeholder="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">医院名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="orgName" lay-verify="required|yymcLen" autocomplete="off" class="layui-input" placeholder="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">医院等级</label>
+                <div class="layui-input-block">
+                    <select name="orgLevel" id="orgLevel" lay-verify="required">
+                        <option value=""></option>
+                        <option value="未定级">未定级</option>
+                        <option value="一级医院">一级医院</option>
+                        <option value="三级甲等">三级甲等</option>
+                        <option value="三级乙等">三级乙等</option>
+                        <option value="三级丙等">三级丙等</option>
+                        <option value="二级甲等">二级甲等</option>
+                        <option value="二级乙等">二级乙等</option>
+                        <option value="二级丙等">二级丙等</option>
+                        <option value="一级甲等">一级甲等</option>
+                        <option value="一级乙等">一级乙等</option>
+                        <option value="一级丙等">一级丙等</option>
+                    </select>
+                </div>
+            </div>
+            <!--&lt;!&ndash;改成联动下拉选项&ndash;&gt;-->
+            <div class="layui-form-item">
+                <!--省/市/区/街道-->
+                <label class="layui-form-label">省</label>
+                <div class="layui-input-block">
+                    <select id="province" lay-filter="province" name="province" lay-verify="required" lay-search>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <!--省/市/区/街道-->
+                <label class="layui-form-label">市</label>
+                <div class="layui-input-block">
+                    <select id="city" lay-filter="city" name="city" lay-verify="required" lay-search>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <!--省/市/区/街道-->
+                <label class="layui-form-label">县/区</label>
+                <div class="layui-input-block">
+                    <select id="county" lay-filter="county" name="county" lay-verify="required" lay-search>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <!--省/市/区/街道-->
+                <label class="layui-form-label">镇/街道</label>
+                <div class="layui-input-block">
+                    <select id="town" lay-filter="town" name="town" lay-verify="required" lay-search>
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">详细地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="orgAdress" lay-verify="required|yymcLen" autocomplete="off" class="layui-input" placeholder="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系人姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="lnrName" lay-verify="required|yymcLen" autocomplete="off" class="layui-input" placeholder="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系电话</label>
+                <div class="layui-input-block">
+                    <input type="text" name="lnrPhone" lay-verify="required|lxdh" autocomplete="off" class="layui-input" placeholder="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" id="username" name="username" lay-verify="required|yymcLen" autocomplete="off" class="layui-input" placeholder="">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">登录密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="password" lay-verify="required|pass" autocomplete="off" class="layui-input" placeholder="">
+                    <input type="hidden" name="id">
+                </div>
+            </div>
+            <div class="layui-form-item" style="display: none;">
+                <button id="editBtn" lay-submit lay-filter="editBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+                <button id="addBtn" lay-submit lay-filter="addBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="../js/page/guanxi.js"></script>
+<script src="../js/page/hospitalManageList.js"></script>
+</html>

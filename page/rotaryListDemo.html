@@ -1,0 +1,386 @@
+<!--转出管理-回转列表-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>转出管理-回转列表</title>
+    <script src="../js/page/commen.js"></script>
+    <script src="../js/base64.js"></script>
+    <style>
+        .layui_box{
+            margin: 0 10px;
+        }
+        #details{
+            display: none;  width: 1100px;
+        }
+        .layui-layer.layui-layer-page{
+            width: auto !important;
+        }
+        .toEidt{
+            margin: 20px;
+        }
+        .toEidt .layui-form-item{
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="pageBox">
+    <div class="page_title">回转列表</div>
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <!--<label class="layui-form-label">搜索选择框</label>-->
+            <div class="layui-input-inline">
+                <select name="hospital" lay-search="" id="hosList">
+                    <option value="">请选择医院</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <!--<label class="layui-form-label">搜索选择框</label>-->
+            <div class="layui-input-inline">
+                <select name="status" lay-search="">
+                    <!--状态(1.提交-申请中 2.审核通过-审核中 3.通过 4.撤回 5.退回 6.驳回)-->
+                    <option value="">全部</option>
+                    <option value="1">申请中</option>
+                    <option value="2">待审核</option>
+                    <option value="3">通过</option>
+                    <option value="4">撤回</option>
+                    <option value="5">退回</option>
+                    <option value="6">驳回</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <!--<label class="layui-form-label">日期范围</label>-->
+            <div class="layui-input-inline date_scope">
+                <input type="text" class="layui-input date_scope" name="date" id="laydate" placeholder="开始日期-结束日期" autocomplete="off">
+                <i class="iconfont iconrili-tianchong data_icon m-gray2"></i>
+            </div>
+        </div>
+        <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">单行输入框</label>-->
+        <div class="layui-inline">
+            <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="姓名或身份证号" class="layui-input">
+        </div>
+        <!--</div>-->
+        <div class="layui-inline">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+        </div>
+    </form>
+    <div class="data-card charts_box">
+        <table class="layui-hide" id="table"  lay-filter="complainList"></table>
+        <!--转出状态(1.提交-申请中 2.审核通过-审核中 3.通过 4.撤回 5.退回 6.驳回)-->
+        <script type="text/html" id="barDemo1">
+            {{# if(d.status === '1'){ }}
+            <a class="layui-btn-xs m-green" lay-event="state_0">待接收</a>
+            {{# }if(d.status === '2') { }}
+            <a class="layui-btn-xs m-green" lay-event="state_1">待审核</a>
+            {{# }if(d.status === '3') { }}
+            <a class="layui-btn-xs" lay-event="state_1">通过</a>
+            {{# }if(d.status === '4') { }}
+            <a class="layui-btn-xs" lay-event="state_1">撤回</a>
+            {{# }if(d.status === '5') { }}
+            <a class="layui-btn-xs m-tuihui" lay-event="state_1">退回</a>
+            {{# }if(d.status === '6') { }}
+            <a class="layui-btn-xs" lay-event="state_1">驳回</a>
+            {{# } }}
+        </script>
+        <script type="text/html" id="barDemo">
+            {{# if(d.status === '1'){ }}
+            <a class="layui-btn-xs" lay-event="detail">接收</a>
+            <a class="layui-btn-xs" lay-event="detail">查看</a>
+            {{# }if(d.status === '2') { }}
+            <a class="layui-btn-xs m-green" lay-event="state_1">待审核</a>
+            {{# }if(d.status === '3') { }}
+            <a class="layui-btn-xs" lay-event="state_1">通过</a>
+            {{# }if(d.status === '4') { }}
+            <a class="layui-btn-xs" lay-event="state_1">撤回</a>
+            {{# }if(d.status === '5') { }}
+            <a class="layui-btn-xs m-tuihui" lay-event="state_1">退回</a>
+            {{# }if(d.status === '6') { }}
+            <a class="layui-btn-xs" lay-event="state_1">驳回</a>
+            {{# } }}
+        </script>
+        <!--<script type="text/html" id="barDemo">-->
+        <!--&lt;!&ndash;{{d.hospitalId}}&ndash;&gt;-->
+        <!--&lt;!&ndash;{{localStorage.getItem("roleName")}}&ndash;&gt;-->
+        <!--{{# if(d.hospitalId == undefined && localStorage.getItem("roleName") == "普通用户"){ }}-->
+        <!--&lt;!&ndash;数据卫健委 当前登录人医院&ndash;&gt;-->
+        <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+        <!--&lt;!&ndash;数据卫健委 当前登录 是卫健委&ndash;&gt;-->
+        <!--{{# }if(d.hospitalId == undefined && localStorage.getItem("roleName") == "管理员") { }}-->
+        <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+        <!--<a class="layui-btn layui-btn-xs btn_reset" lay-event="edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        <!--&lt;!&ndash;数据是医院 当前登录人普通用户&ndash;&gt;-->
+        <!--{{# }if(d.hospitalId !== undefined && localStorage.getItem("roleName") == "普通用户") { }}-->
+        <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+        <!--<a class="layui-btn layui-btn-xs btn_reset" lay-event="edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        <!--&lt;!&ndash;数据是医院 当前登录人管理员  状态审核中&ndash;&gt;-->
+        <!--{{# }if(d.hospitalId !== undefined && localStorage.getItem("roleName") == "管理员" && d.status === '4') { }}-->
+        <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="shen">审核</a>-->
+        <!--&lt;!&ndash;数据是医院 当前登录人管理员  状态除审核中&ndash;&gt;-->
+        <!--{{# }if(d.hospitalId !== undefined && localStorage.getItem("roleName") == "管理员" && d.status !== '4') { }}-->
+        <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+        <!--{{# } }}-->
+        <!--</script>-->
+        <div id="laypage"></div>
+    </div>
+</div>
+
+<!--<script type="text/javascript" src="../js/IE8.js"></script>-->
+<script type="text/javascript" >
+    $(function () {
+        jQuery('[placeholder]').focus(function() {
+            var input = jQuery(this);
+            if (input.val() == input.attr('placeholder')) {
+                input.val('');
+                input.removeClass('placeholder');
+            }
+            input.css("color","#555");
+        }).blur(function() {
+            var input = jQuery(this);
+            if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                input.addClass('placeholder');
+                input.val(input.attr('placeholder'));
+                input.css("color","#888");
+            }
+        }).blur().parents('form').submit(function() {
+            jQuery(this).find('[placeholder]').each(function() {
+                var input = jQuery(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                }
+            })
+        });
+        layui.use([ 'table','laydate','laypage'], function() {
+            var $ = layui.$;
+            var form = layui.form
+            var table = layui.table;
+            var laydate = layui.laydate;
+            var laypage = layui.laypage;
+            //日期范围
+            laydate.render({
+                elem: '#laydate'
+                ,range: true
+                ,done: function(value, date, endDate){
+                    // if(date.year == 2017 && date.month == 11 && date.date == 30){
+                    //     dateIns.hint('一不小心就月底了呢');
+                    // }
+                }
+                ,change: function(value, date, endDate){
+                    // layer.msg(value)
+                }
+            });
+            // 获取下拉框上级医院列表
+            getHosList()
+            function getHosList(){
+                var jsonParams = {
+                    id: parent.loginUserInfo.orgId,
+                }
+                getAjax('/sys/org/getRelHosOrg', jsonParams, function (resultMsg) {
+                    if(resultMsg.retCode == 0){
+                        $.each(resultMsg.data.upOrgList, function (i, item) {
+                            $("#hosList").append('<option value="' + item.orgCode + '">' + item.orgName + '</option>');
+                        });
+                        layui.form.render("select");
+                    }
+                });
+            }
+            console.log(parent.loginUserInfo.orgName)
+            console.log(parent.loginUserInfo.name)
+            console.log(parent.loginUserInfo.depName)
+            console.log(parent.loginUserInfo.depName)
+            // 当前登录人角色roleName:'院领导'，'医生'
+            var jsonParam = {
+                accOrgId : parent.loginUserInfo.orgId, //接收机构标识
+                pageNo: '1', // 起始页， 默认10
+                pageSize: '10',// 页大小， 默认10
+                startDate: '', //查询起始时间
+                endDate: '', // 查询结束时间
+                outStatus:'',   //查询状态
+                nameOrSfzh:'' //查询患者名称或者身份证号
+
+            };
+            // 搜索
+            form.on('submit(search)', function (data) {
+                jsonParam.accOrgId = data.field.hospital  //接收机构标识
+                jsonParam.nameOrSfzh = data.field.name  //患者名称或者身份证号
+                jsonParam.startDate = data.field.date.slice(0,10);
+                jsonParam.endDate = data.field.date.slice(13,23);
+                jsonParam.outStatus = data.field.status;  //状态
+                getList(jsonParam);
+                return false;
+            });
+            // 回转医院table
+            var tableobj = {
+                elem: '#table'
+                ,cellMinWidth: 80
+                ,cols: [[
+                    {field:'name', title: '患者姓名',width:120}
+                    ,{field:'sfzh', title: '身份证号',minWidth:150}
+                    ,{field:'sex', title: '性别',width:100}
+                    ,{field:'orgName', title: '转出医院',minWidth:130}
+                    ,{field:'depName', title: '转出科室',minWidth:130}
+                    ,{field:'docName', title: '转出医生',minWidth:130}
+                    ,{field:'createTime', title: '申请时间',minWidth:130}
+                    ,{field:'accOrgName', title: '转入医院',minWidth:130}
+                    ,{field:'accDepName', title: '转入科室',minWidth:130}
+                    ,{field:'accDocName', title: '接诊医生',minWidth:130}
+                    ,{field:'status', title: '状态',toolbar: '#barDemo1',width:100}
+                    ,{fixed: 'right', title: '管理',toolbar: '#barDemo',width:200}
+                ]]
+                ,data: []
+            };
+            // 回转列表分页
+            var pageobj = {
+                elem: 'laypage',
+                count: 0, //数据总数
+                limit: 10,  //得到每页显示的条数
+                curr: 1  //得到当前页，以便向服务端请求对应页的数据。
+                ,prev: '<em><</em>'
+                ,next: '<em>></em>'
+                ,layout: ['count', 'prev', 'page', 'next']
+            };
+
+            //监听工具条
+            // table.on('tool(complainList)', function(obj){
+            //     var datas = obj.data;
+            //     if(obj.event === 'detail'){
+            //         // layer.msg('ID：'+ data.id + ' 的查看操作');
+            //         $("#readO").attr("readOnly",true).val(datas.title);
+            //         $("#readF").attr("readOnly",true).val(datas.subtitle);
+            //         $(".get-content").html(datas.content)
+            //         if(datas.imageUrl !== undefined){
+            //             $("#show_i").attr("src",datas.imageUrl)
+            //         }
+            //         $("#saveH").hide()
+            //         $(".showUpload").hide()
+            //         $(".showFollow").show()
+            //         layer.open({
+            //             type: 1,
+            //             content: $('#details') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            //         });
+            //     } else if(obj.event === 'shen'){
+            //         $("#readO").attr("readOnly",true).val(datas.title);
+            //         $("#readF").attr("readOnly",true).val(datas.subtitle);
+            //         $(".get-content").html(datas.content)
+            //         if(datas.imageUrl !== undefined){
+            //             $("#pic").attr("src",datas.imageUrl)
+            //         }
+            //         $("#saveH").show()
+            //         $(".showUpload").hide()
+            //         $(".showFollow").show()
+            //         layer.open({
+            //             type: 1,
+            //             content: $('#details') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+            //         });
+            //         var jsonParame = {
+            //             status : '',
+            //             id : datas.id
+            //         }
+            //         form.on('submit(saveEdit)', function (data) {
+            //             jsonParame.status = '1'
+            //             shen(jsonParame);
+            //             return false;
+            //         });
+            //         form.on('submit(bohui)', function (data) {
+            //             jsonParame.status = '5'
+            //             shen(jsonParame);
+            //             return false;
+            //         });
+            //     } else if(obj.event === 'del'){
+            //         layer.confirm('真的删除行么', function(index){
+            //             var jsonParams = {
+            //                 id : datas.id,
+            //             }
+            //             getAjax('/reg/healthEducateInfo/deleteHealthEducateInfo', jsonParams, function (resultMsg) {
+            //                 if(resultMsg.retCode == 0){
+            //                     layer.closeAll();
+            //                     layer.msg('已删除')
+            //                     getList(jsonParam);
+            //                 }else{
+            //                     layer.msg('删除失败，请重试')
+            //                 }
+            //             });
+            //         });
+            //     } else if(obj.event === 'edit'){
+            //         window.location.href = "healthSciencePublish.html?id="+datas.id+"&status="+datas.status
+            //     }
+            // });
+            // function shen(jsonParame){
+            //     getAjax('/reg/healthEducateInfo/auditHealthEducateInfo', jsonParame, function (resultMsg) {
+            //         if(resultMsg.retCode == 0){
+            //             layer.closeAll();
+            //             layer.msg('已处理')
+            //             getList(jsonParam);
+            //         }else{
+            //             layer.msg('操作失败，请重试')
+            //         }
+            //     });
+            // }
+            // 回转列表
+            function getList (jsonParam) {
+                getAjax('/rotary/getOutTurnRotaryPage', jsonParam, function (resultMsg) {
+                    pageobj.count = resultMsg.data.count
+                    tableobj.data = resultMsg.data.list;
+                    pageobj.count = resultMsg.data.count;
+                    table.render(tableobj);
+                    laypage.render(pageobj);
+                });
+            }
+            getList(jsonParam);
+            pageobj.jump = function (obj) {
+                jsonParam.pageSize = obj.limit;
+                jsonParam.pageNo = obj.curr;
+                getAjax('/rotary/getOutTurnRotaryPage', jsonParam, function (resultMsg) {
+                    tableobj.data = resultMsg.data.list;
+                    table.render(tableobj);
+                });
+            };
+            laypage.render(pageobj);
+        })
+    })
+</script>
+</body>
+<!--<div id="details">-->
+<!--<form class="layui-form toEidt">-->
+<!--<div class="layui-form-item">-->
+<!--<label class="layui-form-label">标题</label>-->
+<!--<div class="layui-input-block">-->
+<!--<input type="text" name="title"  placeholder="请输入" autocomplete="off" class="layui-input" id="readO">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="layui-form-item">-->
+<!--<label class="layui-form-label">副标题</label>-->
+<!--<div class="layui-input-block">-->
+<!--<input type="text" name="subtitle"  placeholder="请输入" autocomplete="off" class="layui-input" id="readF">-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="layui-form-item">-->
+<!--<label class="layui-form-label">健康科普封面：</label>-->
+<!--<div class="layui-input-block showFollow">-->
+<!--<img class="img_f" id="show_i" src="../img/upload_bg.png" alt="">-->
+<!--</div>-->
+<!--<div class="layui-input-block showUpload">-->
+<!--<img id="pic" src="../img/upload_bg.png" >-->
+<!--&lt;!&ndash;<input id="upload1" name="file" onchange="PreviewImage(this, '#pic', 'img')" accept="image/*" type="file" style="display: none"/>&ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="layui-form-item layui-form-text">-->
+<!--<label class="layui-form-label">内容</label>-->
+<!--<div class="layui-input-block get-content">-->
+<!--&lt;!&ndash;<textarea placeholder="请输入内容" name="content" class="layui-textarea" id="readT"></textarea>&ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="layui-form-item" id="saveH">-->
+<!--<div class="layui-input-block">-->
+<!--<button type="submit" class="layui-btn btn_reset" lay-submit="" lay-filter="saveEdit">通过</button>-->
+<!--<button type="submit" class="layui-btn btn_reset" lay-submit="" lay-filter="bohui">驳回</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</form>-->
+<!--</div>-->
+</html>

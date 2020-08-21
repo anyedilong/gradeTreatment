@@ -1,0 +1,375 @@
+<!--outTransfer.html 转出申请列表-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>转出申请列表</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .tableAddBtn:hover {
+            color: #3B76F6;
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <div class="page_title">
+            转出申请列表
+            <div class="tableAddBtn fr cursorP" id="tableAddBtn">
+                <!--<i class="iconfont fl">&#xe61e;</i>-->
+                <!--<span class="fl">添加转出单</span>-->
+            </div>
+        </div>
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">转入医院</label>
+                    <div class="layui-input-inline">
+                        <select name="hospital" lay-search="" id="hosList">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <select name="status" lay-filter="sss" id="status">
+                            <!--状态(1.提交-申请中 2.审核通过-审核中 3.通过 4.撤回 5.退回 6.驳回)-->
+                            <option value="">全部状态</option>
+                            <!--<option value="0">申请中</option>-->
+                            <!--<option value="1">审核中</option>-->
+                            <!--<option value="2">通过</option>-->
+                            <!--<option value="3">退回</option>-->
+                            <!--<option value="4">撤回</option>-->
+                            <!--<option value="5">驳回</option>-->
+                            <!--<option value="6">接收</option>-->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-input-inline date_scope">
+                    <input type="text" class="layui-input date_scope" name="date" id="laydate" placeholder="开始日期-结束日期" autocomplete="off">
+                    <i class="iconfont iconrili-tianchong data_icon m-gray2"></i>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <input type="text" name="sfzhOrName" lay-verify="title" autocomplete="off" placeholder="姓名或身份证号" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+            </div>
+        </form>
+        <!--状态  0、待审核 1、审核中 2、通过 3、退回 4、撤回  5、驳回  （退回、撤回 都可修改，修改后变待审核状态）-->
+        <div class="data-card charts_box">
+            <table class="layui-hide" id="table" lay-filter="dataList" lay-skin="row"></table>
+            <script type="text/html" id="barDemo1">
+                {{# if(d.status === '0'){ }}
+                {{# if (parent.loginUserInfo.role.roleType == '1') { }}
+                    <a class="m-green" lay-event="state_0">待审核</a>
+                {{# } else { }}
+                    <a class="m-green" lay-event="state_0">申请中</a>
+                {{# } }}
+                {{# }if(d.status === '1') { }}
+                <a class="m-blue1" lay-event="state_1">审核中</a>
+                {{# }if(d.status === '2') { }}
+                <a class="" lay-event="state_2">通过</a>
+                {{# }if(d.status === '3') { }}
+                <a class="" lay-event="state_3">退回</a>
+                {{# }if(d.status === '4') { }}
+                <a class="m-gray4" lay-event="state_4">撤回</a>
+                {{# }if(d.status === '5') { }}
+                <a class="" lay-event="state_5">驳回</a>
+                {{# }if(d.status === '6') { }}
+                <a class="" lay-event="state_5">已接收</a>
+                {{# } }}
+            </script>
+            <script type="text/html" id="barDemo">
+                {{# for (var i = 0; i < parent.menuZCSQ.length; i++) {  }}
+                    {{# if (parent.menuZCSQ[i].name !== '添加转出单' && parent.menuZCSQ[i].name !== '提交' && parent.menuZCSQ[i].name !== '退回') {  }}
+                        {{# if (parent.loginUserInfo.role.roleType == '99' || parent.loginUserInfo.role.roleType == '3') {  }}
+                            {{# if (parent.menuZCSQ[i].name == '查看') {  }}
+                                <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                            {{# } else {  }}
+                                <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                            {{# }  }}
+                        {{# } else {  }}
+                            {{# if (d.status === '0') { }}
+                                {{# if (parent.menuZCSQ[i].name == '修改' || parent.menuZCSQ[i].name == '删除') { }}
+                                    <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } else { }}
+                                    {{# if (parent.loginUserInfo.role.roleType == '1' && parent.menuZCSQ[i].name == '撤回') { }}
+                                        <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                    {{# } else { }}
+                                        <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                    {{# } }}
+                                {{# } }}
+                            {{# } else if (d.status === '1') { }}
+                                {{# if (parent.menuZCSQ[i].name !== '查看') { }}
+                                    <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } else { }}
+                                    <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } }}
+                            {{# } else if (d.status === '2') { }}
+                                {{# if (parent.menuZCSQ[i].name == '修改' || parent.menuZCSQ[i].name == '删除' || parent.menuZCSQ[i].name == '审核' || parent.menuZCSQ[i].name == '撤回') { }}
+                                    <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } else { }}
+                                    <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } }}
+                            {{# } else if (d.status === '3') { }}
+                                {{# if (parent.menuZCSQ[i].name == '撤回' || parent.menuZCSQ[i].name == '审核') { }}
+                                    <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } else { }}
+                                    <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } }}
+                            {{# } else if (d.status === '4') { }}
+                                {{# if (parent.menuZCSQ[i].name == '撤回' || parent.menuZCSQ[i].name == '审核') { }}
+                                    <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } else { }}
+                                    <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } }}
+                            {{# } else if (d.status === '5') { }}
+                                {{# if (parent.menuZCSQ[i].name !== '审核' && parent.menuZCSQ[i].name !== '查看') { }}
+                                    <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } else { }}
+                                    <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } }}
+                            {{# } else if (d.status === '6') { }}
+                                {{# if (parent.menuZCSQ[i].name === '查看') { }}
+                                    <a class="m-blue1" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } else { }}
+                                    <a class="m-gray4" lay-event="{{parent.menuZCSQ[i].name}}">{{parent.menuZCSQ[i].name}}</a>
+                                {{# } }}
+                            {{# } }}
+                        {{# } }}
+                    {{# } }}
+                {{# } }}
+            </script>
+            <div id="laypage"></div>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        var btnArr = [];
+        $.each(parent.menuZCSQ, function (i, item) {
+            btnArr.push(item.name);
+        });
+        if (btnArr.join(',').indexOf('添加转出单') > -1) {
+            $('#tableAddBtn').html('<i class="iconfont fl">&#xe61e;</i>' +
+                '<span class="fl">添加转出单</span>');
+        } else {
+            $('#tableAddBtn').html('');
+        }
+        $('#tableAddBtn').click(function () {
+            window.location.href = 'outTransferAdd.html';
+        });
+        layui.use(['form','laydate','table','laypage'], function(){
+            var $ = layui.$;
+            var form = layui.form;
+            var table = layui.table;
+            var laydate = layui.laydate;
+            var laypage = layui.laypage;
+            // 状态下拉列表
+            var attr = '';
+            if (parent.loginUserInfo.role.roleType == '1') {
+                // 待审核、退回、审核中、驳回、通过、接收
+                attr = '<option value="0">待审核</option>' +
+                    '<option value="1">审核中</option>' +
+                    '<option value="2">通过</option>' +
+                    '<option value="3">退回</option>' +
+                    '<option value="5">驳回</option>' +
+                    '<option value="6">接收</option>';
+            } else {
+                attr = '<option value="0">申请中</option>' +
+                    '<option value="1">审核中</option>' +
+                    '<option value="2">通过</option>' +
+                    '<option value="3">退回</option>' +
+                    '<option value="4">撤回</option>' +
+                    '<option value="5">驳回</option>' +
+                    '<option value="6">接收</option>';
+            }
+            $('#status').append(attr);
+            var dateIns = laydate.render({
+                elem: '#laydate'
+                ,range: true
+                ,done: function(value, date, endDate){
+                    if(date.year == 2017 && date.month == 11 && date.date == 30){
+                        dateIns.hint('一不小心就月底了呢');
+                    }
+                }
+                ,change: function(value, date, endDate){
+                    // layer.msg(value)
+                }
+            });
+            var tableobj = {
+                elem: '#table',
+                cellMinWidth: 80,
+                even: true,
+                cols: [[
+                    {field:'name', title: '患者姓名'},
+                    {field:'sfzh', title: '身份证号', minWidth: 180},
+                    {field:'sex', title: '性别', width: 60},
+                    {field:'age', title: '年龄', width: 60},
+                    {field:'outOrgName', title: '转出医院', minWidth: 200},
+                    {field:'outDepName', title: '转出科室', minWidth: 100},
+                    {field:'turnDoctor', title: '转出医生', minWidth: 100},
+                    {field:'turnTime', title: '申请时间', width: 130},
+                    {field:'inOrgName', title: '转入医院', minWidth: 200},
+                    {field:'inDepName', title: '转入科室', minWidth: 100},
+                    {field:'accDoctor', title: '接诊医生', minWidth: 100},
+                    {fixed: 'right', title: '状态',toolbar: '#barDemo1', width: 75},
+                    {fixed: 'right', title: '管理',toolbar: '#barDemo', minWidth: 165}
+                ]],
+                data: []
+            };
+            var pageobj = {
+                elem: 'laypage',
+                count: 0, //数据总数
+                limit: 10,  //得到每页显示的条数
+                curr: 1,  //得到当前页，以便向服务端请求对应页的数据。
+                prev: '<em><</em>',
+                next: '<em>></em>',
+                layout: ['count', 'prev', 'page', 'next']
+            };
+            //监听工具条
+            table.on('tool(dataList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var trdata = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+                if ($(this).attr('class') == 'm-blue1') {
+                    if(layEvent === '查看'){ //查看
+                        if (parent.loginUserInfo.role.roleType == '2') {
+                            window.location.href = 'outTransferExamine.html?type=chakan&id=' + trdata.id + '&status=' + trdata.status;
+                        } else {
+                            window.location.href = 'outTransferExamine2.html?type=chakan&id=' + trdata.id + '&status=' + trdata.status;
+                        }
+                    }
+                    else if (layEvent === '撤回') {
+                        var tiptxt = '';
+                        if (trdata.status == '0') {
+                            tiptxt = '您是否确认撤回该转出申请？'
+                        } else if (trdata.status == '1') {
+                            tiptxt = '该转出申请进入审核状态，请联系上级领导进行撤回。'
+                        }
+                        layer.open({
+                            id: 'login',
+                            type: 1,
+                            title: '提示',
+                            skin: 'my-layui-layer', //样式类名
+                            area: ['360px', '180px'],
+                            shadeClose: true,
+                            shade: 0.2,
+                            content: '<div style="padding: 20px;">' + tiptxt + '</div>', //iframe的url
+                            btn: ['关闭', '确认'],
+                            btn2: function (index) {
+                                if (trdata.status == '0') {
+                                    getAjax('/turnout/drawTurnOut', {id: trdata.id}, function (resultMsg) {
+                                        layer.close(index);
+                                        getList(jsonParam);
+                                    });
+                                } else {
+                                    layer.close(index);
+                                }
+                                return false;
+                            }
+                        });
+                    } else if (layEvent === '修改') {
+                        window.location.href = 'outTransferAdd.html?type=xiugai&id=' + trdata.id;
+                        // 修改直接跳转修改
+                    } else if (layEvent === '删除') {
+                        layer.open({
+                            id: 'login',
+                            type: 1,
+                            title: '提示',
+                            skin: 'my-layui-layer', //样式类名
+                            area: ['360px', '180px'],
+                            shadeClose: true,
+                            shade: 0.2,
+                            content: '<div style="padding: 20px;">您是否确认删除该转出申请？</div>', //iframe的url
+                            btn: ['关闭', '确认'],
+                            btn2: function (index) {
+                                getAjax('/turnout/deleteTurnOut', {id: trdata.id}, function (resultMsg) {
+                                    layer.close(index);
+                                    getList(jsonParam);
+                                });
+                                return false;
+                            }
+                        });
+                    } else if (layEvent === '审核') {
+                        window.location.href = 'outTransferExamine2.html?type=shenhe&id=' + trdata.id + '&status=' + trdata.status;
+                    }
+                }
+            });
+            var jsonParam = {
+                pageNo: '1', // 起始页， 默认10
+                pageSize: '10', // 页大小， 默认10
+            };
+            function getList (jsonParam) {
+                getAjax('/turnout/getTurnOutList', jsonParam, function (resultMsg) {
+                    $.each(resultMsg.data.list, function (i, item) {
+                        item.turnTime = item.turnTime.substring(0, 10);
+                    });
+                    tableobj.data = resultMsg.data.list;
+                    pageobj.count = resultMsg.data.count;
+                    table.render(tableobj);
+                    laypage.render(pageobj);
+                });
+            }
+            getList(jsonParam);
+            pageobj.jump = function (obj) {
+                jsonParam.pageSize = obj.limit
+                jsonParam.pageNo = obj.curr
+                getAjax('/turnout/getTurnOutList', jsonParam, function (resultMsg) {
+                    $.each(resultMsg.data.list, function (i, item) {
+                        item.turnTime = item.turnTime.substring(0, 10);
+                    });
+                    tableobj.data = resultMsg.data.list;
+                    table.render(tableobj);
+                });
+            };
+
+            getHosList();
+            function getHosList(){
+                if (parent.loginUserInfo.role.roleType == '99') {
+                    getAjax('/sys/org/queryOrgList', {}, function (resultMsg) {
+                        console.log(resultMsg)
+                        if(resultMsg.retCode == 0){
+                            $.each(resultMsg.data, function (i, item) {
+                                $("#hosList").append('<option value="' + item.id + '">' + item.orgName + '</option>');
+                            });
+                            layui.form.render("select");
+                        }
+                    });
+                } else {
+                    var jsonParams = {
+                        id: parent.loginUserInfo.orgId,
+                    }
+                    getAjax('/sys/org/getRelHosOrg', jsonParams, function (resultMsg) {
+                        if(resultMsg.retCode == 0){
+                            $.each(resultMsg.data.upOrgList, function (i, item) {
+                                $("#hosList").append('<option value="' + item.id + '">' + item.orgName + '</option>');
+                            });
+                            layui.form.render("select");
+                        }
+                    });
+                }
+            }
+            form.on('submit(search)', function (data) {
+                jsonParam.accOrgId = data.field.hospital  //接收机构标识
+                jsonParam.sfzhOrName = data.field.sfzhOrName  //患者名称或者身份证号
+                jsonParam.startTime = data.field.date.slice(0,10);
+                jsonParam.endTime = data.field.date.slice(13,23);
+                jsonParam.audit = data.field.status;  //状态
+                getList(jsonParam);
+                return false;
+            });
+        });
+    })
+</script>
+</html>

@@ -1,0 +1,137 @@
+<!--院领导院医生首页 home1-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/page/commen.js"></script>
+    <script src="../js/page/index.js"></script>
+    <style>
+        .home-box, .circle_r {
+            behavior: url(../js/PIE/PIE.htc);
+            position: relative;
+        }
+        .home-box {
+            background: #FFFFFF;
+            border-radius: 4px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .left-dbsx {
+            margin-bottom: 20px;
+        }
+        .circle_box{
+            width: 100%;
+            height: 200px;
+        }
+        .circle_box li{
+            float: left;
+            width: 25%;
+            text-align: center;
+        }
+        .circle_r{
+            text-align: center;
+            border-radius: 50%;
+            font-size: 40px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .circle_tit {
+            font-size: 14px;
+        }
+        .circle1{
+            border: 4px solid #32B16C;
+            color:#32B16C;
+        }
+        .circle2{
+            border: 4px solid #3B76F6;
+            color:#3B76F6;
+        }
+        .circle3{
+            border: 4px solid #F39800;
+            color:#F39800;
+        }
+        .circle4{
+            border: 4px solid #FD6161;
+            color:#FD6161;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        .pie_box_t{
+            width: 32.6%;
+            float: left;
+            margin-bottom: 20px;
+        }
+        .mg_r{
+            margin-right: 1%;
+        }
+        .charts_p{
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="pageBox">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md12">
+            <div class="home-box left-dbsx">
+                <div class="com-tit blueblack">年度转诊次数</div>
+                <ul class="circle_box">
+                    <li>
+                        <a href="JavaScript:void(0)" >
+                            <div class="circle_r circle1">
+                                <span id="zcsq">10</span>
+                            </div>
+                            <div class="circle_tit">转出申请</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="JavaScript:void(0)">
+                            <div class="circle_r circle2">
+                                <span id="hzsq">10</span>
+                            </div>
+                            <div class="circle_tit">回转申请</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="JavaScript:void(0)">
+                            <div class="circle_r circle3">
+                                <span id="zcjs">10</span>
+                            </div>
+                            <div class="circle_tit">转出接收</div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="JavaScript:void(0)">
+                            <div class="circle_r circle4">
+                                <span id="hzjs">10</span>
+                            </div>
+                            <div class="circle_tit">回转接收</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class=" left-byzztj">
+                <div class="pad_box pie_box_t mg_r">
+                    <div class="com-tit blueblack">年度转出&回转申请占比</div>
+                    <div class="charts_p" id="zhPie"></div>
+                </div>
+                <div class="pad_box pie_box_t mg_r hz">
+                    <div class="com-tit blueblack">年度转出&回转占比</div>
+                    <div class="charts_p" id="ksZrPie"></div>
+                </div>
+                <div class="pad_box pie_box_t">
+                    <div class="com-tit blueblack">年度接收&回转占比</div>
+                    <div class="charts_p" id="ksHzPie"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../js/page/home2.js" ></script>
+<script src="../js/page/indexJump.js"></script>
+</html>

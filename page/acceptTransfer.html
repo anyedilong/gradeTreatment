@@ -1,0 +1,339 @@
+<!--acceptTransfer.html-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>接收转入列表</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .charts {
+            /*width: 100%;*/
+            /*height: 300px;*/
+        }
+        .layui-layer-page .layui-layer-content{
+           padding-right: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <div class="page_title">接收转入列表</div>
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">转出医院</label>
+                    <div class="layui-input-inline">
+                        <select name="orgId" lay-filter="hos" id="hosList">
+                            <option value="">全部医院</option>
+<!--                            <option value="1">雅居园社区卫生院</option>-->
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline" id="status_h">
+                <!--<label class="layui-form-label">搜索选择框</label>-->
+                <div class="layui-input-inline">
+                    <select name="audit" lay-search="" id="status">
+                        <!--状态(0.待分流 1.分流通过-待接收 2.驳回 3.接收)-->
+                        <option value="">全部状态</option>
+                        <!--<option value="0">待分流</option>-->
+                        <!--<option value="1">分流通过-待接收</option>-->
+                        <!--<option value="2">驳回</option>-->
+                        <!--<option value="3">接收</option>-->
+                    </select>
+                </div>
+            </div>
+<!--            <div class="layui-inline">-->
+<!--                <div class="layui-form-item">-->
+<!--                    <div class="layui-input-inline">-->
+<!--                        <select name="audit" lay-filter="status">-->
+<!--                            <option value="">全部状态</option>-->
+<!--                            <option value="0">待分流</option>-->
+<!--                            <option value="1">通过</option>-->
+<!--                            <option value="2">驳回</option>-->
+<!--                            <option value="3">接收</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="layui-inline">
+                <div class="layui-input-inline date_scope">
+                    <input type="text" name="timeRange" class="layui-input date_scope" id="laydate" placeholder="开始日期-结束日期">
+                    <i class="iconfont iconrili-tianchong data_icon m-gray2"></i>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="sfzhOrName" autocomplete="off" class="layui-input" placeholder="姓名或身份证号">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+            </div>
+        </form>
+        <div class="data-card charts_box">
+            <table class="layui-hide" id="table" lay-filter="dataList" lay-skin="row"></table>
+            <!--分流状态  0、待分流 1、通过 2、驳回  3、接收-->
+            <script type="text/html" id="barDemo1">
+                {{# if(d.status === '0'){ }}
+                <a class="layui-btn-xs m-green" lay-event="state_0">待分流</a>
+                {{# } if(d.status === '1'){ }}
+                {{# if (parent.loginUserInfo.role.roleType == '1') { }}
+                <a class="layui-btn-xs" lay-event="state_0">通过</a>
+                {{# } else { }}
+                <a class="layui-btn-xs m-green" lay-event="state_0">待接收</a>
+                {{# } }}
+                {{# }if(d.status === '2') { }}
+                <a class="layui-btn-xs m-tuihui" lay-event="state_1">驳回</a>
+                {{# }if(d.status === '3') { }}
+                <a class="layui-btn-xs" lay-event="state_1">已接收</a>
+                {{# } }}
+            </script>
+            <script type="text/html" id="barDemo">
+                {{# if (parent.loginUserInfo.role.roleType == '99' || parent.loginUserInfo.role.roleType == '3' ) {  }}
+                    <a class="layui-btn-xs m-blue1" lay-event="detail">查看</a>
+                {{# } else {  }}
+                    {{# if(d.status === '0'){ }}
+                        <a class="layui-btn-xs m-blue1 cursorP" lay-event="shenhe">分流</a>
+                        <a class="layui-btn-xs m-blue1 cursorP" lay-event="detail">查看</a>
+                    {{# } if(d.status === '1'){ }}
+                        {{# if (parent.loginUserInfo.role.roleType == '1') { }}
+                            <a class="layui-btn-xs m-tuihui cursorN" lay-event="hui">分流</a>
+                            <a class="layui-btn-xs m-blue1 cursorP" lay-event="detail">查看</a>
+                        {{# } else if (parent.loginUserInfo.role.roleType == '2') { }}
+                            <a class="layui-btn-xs m-blue1 cursorP" lay-event="edit">接收</a>
+                            <a class="layui-btn-xs m-blue1 cursorP" lay-event="detail">查看</a>
+                        {{# } }}
+                    {{# }if(d.status === '2') { }}
+                        <a class="layui-btn-xs m-tuihui cursorP" lay-event="hui">分流</a>
+                        <a class="layui-btn-xs m-blue1 cursorP" lay-event="detail">查看</a>
+                    {{# }if(d.status === '3') { }}
+                        {{# if (parent.loginUserInfo.role.roleType == '1') { }}
+                            <a class="layui-btn-xs m-tuihui cursorN" lay-event="hui">回转</a>
+                            <a class="layui-btn-xs m-blue1 cursorP" lay-event="detail">查看</a>
+                        {{# } else if (parent.loginUserInfo.role.roleType == '2' && d.isTurnBack == '0') { }}
+                            <a class="layui-btn-xs m-orange cursorP" lay-event="huizhuan">回转</a>
+                            <a class="layui-btn-xs m-blue1 cursorP" lay-event="detail">查看</a>
+                        {{# } else if (parent.loginUserInfo.role.roleType == '2' && d.isTurnBack == '1') { }}
+                            <a class="layui-btn-xs m-tuihui cursorN" lay-event="hui">回转</a>
+                            <a class="layui-btn-xs m-blue1 cursorP" lay-event="detail">查看</a>
+                        {{# } }}
+                    {{# } }}
+                {{# } }}
+            </script>
+            <div id="laypage"></div>
+        </div>
+    </div>
+    <script src="../js/page/huizhuan.js"></script>
+    <script>
+        $(function () {
+            layui.use(['form','laydate','table','laypage'], function(){
+                var laydate = layui.laydate;
+                var form = layui.form;
+                var table = layui.table;
+                var laypage = layui.laypage;
+                laydate.render({
+                    elem: '#laydate'
+                    ,range: true
+                });
+                var attr = '';
+                if(parent.loginUserInfo.role.roleType == '1'){
+                    attr += ' <option value="0">待分流</option>' +
+                        '<option value="1">通过</option>' +
+                        '<option value="2">驳回</option>'+
+                        '<option value="3">已接收</option>'
+                    // $("#status_h").hide()
+                }else if(parent.loginUserInfo.role.roleType == '2'){
+                    attr += '<option value="1">待接收</option>' +
+                        '<option value="3">已接收</option>'
+                }else{
+                    attr += ' <option value="0">待分流</option>' +
+                        '<option value="1">待接收</option>' +
+                        '<option value="2">驳回</option>'+
+                        '<option value="3">已接收</option>'
+                }
+                $("#status").append(attr);
+                var tableobj = {
+                    elem: '#table',
+                    cellMinWidth: 80,
+                    even: true,
+                    cols: [[
+                        {field:'name', title: '患者姓名'}
+                        ,{field:'sfzh', title: '身份证号',minWidth:180}
+                        ,{field:'sex', title: '性别'}
+                        ,{field:'age', title: '年龄'}
+                        ,{field:'outOrgName', title: '转出医院', minWidth: 200}
+                        ,{field:'outDepName', title: '转出科室',minWidth:100}
+                        ,{field:'turnDoctor', title: '转出医生',minWidth:100}
+                        ,{field:'turnTime', title: '申请时间',minWidth: 130}
+                        ,{field:'inOrgName', title: '转入医院',minWidth:200}
+                        ,{field:'inDepName', title: '转入科室',minWidth:100}
+                        ,{field:'accDoctor', title: '接诊医生',minWidth:100}
+                        ,{fixed: 'right', title: '状态',toolbar: '#barDemo1',minWidth:80}
+                        ,{fixed: 'right', title: '管理',toolbar: '#barDemo',minWidth:165}
+                    ]],
+                    data: [
+                        // {name:'阿花',overNum:'省立医院',status:'1'},
+                        // {name:'阿花',overNum:'省立医院',status:'2'},
+                        // {name:'阿花',overNum:'省立医院',status:'3'},
+                        ]
+                };
+                var pageobj = {
+                    elem: 'laypage',
+                    count: 50, //数据总数
+                    limit: 10,  //得到每页显示的条数
+                    curr: 1,  //得到当前页，以便向服务端请求对应页的数据。
+                    layout: ['count', 'prev', 'page', 'next']
+                };
+                var jsonParam = {
+                    orgId:'',
+                    startTime:'',
+                    endTime:'',
+                    sfzhOrName:'',
+                    audit:'',
+                    pageNo: '1', // 起始页， 不传默认10， 不能为“”
+                    pageSize: '10' // 页大小， 不传默认10， 不能为“”
+                };
+                function getList(jsonParam){
+                    getAjax('/turnin/getTurnInList',jsonParam,function (resultMsg) {
+                        tableobj.data = resultMsg.data.list;
+                        pageobj.count = resultMsg.data.count;
+                        table.render(tableobj);
+                        laypage.render(pageobj);
+                    });
+                }
+                getList(jsonParam);
+                pageobj.jump = function (obj) {
+                    jsonParam.pageSize = obj.limit;
+                    jsonParam.pageNo = obj.curr;
+                    getAjax('/turnin/getTurnInList', jsonParam, function (resultMsg) {
+                        tableobj.data = resultMsg.data.list;
+                        table.render(tableobj);
+                    });
+                };
+                laypage.render(pageobj);
+                //监听工具条
+               var depId = ''
+               form.on('select(accDepId)', function(data){
+                  depId = data.value
+               });
+                table.on('tool(dataList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                    // var datas = obj.data; //获得当前行数据
+                    // var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                    // var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+                    //
+                    // if(layEvent === 'examine'){ //查看
+                    //     window.location.href = 'acceptTransferExamine.html?id='+ data.id;
+                    //     //do somehing
+                    // }else if(layEvent === 'rotation'){//回转
+                    //     window.location.href = 'rotaryTransfer.html';
+                    // }
+                    var datas = obj.data;
+                    if(obj.event === 'detail'){
+                        window.location.href = "acceptTransferExamine.html?status=detail&id="+datas.id
+                    } else if(obj.event === 'shenhe'){
+                        // window.location.href = "acceptTransferExamine.html?status=shenhe&id="+datas.id
+                       getKeshi()
+                       var fenliu = layer.open({
+                          type: 1,
+                          title: '接诊科室',
+                          skin: 'my-layui-layer', //样式类名
+                          area: ['450px', '330px'],
+                          content: $('#fenliu'),
+                          btn: ['关闭', '确认'],
+                          btn1: function (index) {
+                             layer.close(fenliu);
+                          },
+                          btn2: function (index) {
+                             // getAjax('/turnin/receiveTurnIn', {depId:depId}, function (resultMsg) {
+                             //    // window.location.href = 'acceptTransfer.html';
+                             // });
+                             getAjax('/turnin/auditTurnIn', {id: datas.id, audit: '1',depId:depId}, function (resultMsg) {
+                                getList(jsonParam);
+                                layer.close(fenliu);
+                             });
+                             return false;
+                          }
+                       });
+                    } else if(obj.event === 'edit'){
+                        window.location.href = "acceptTransferExamine.html?status=edit&id="+datas.id
+                    }else if(obj.event === 'huizhuan'){
+                        // window.location.href = 'rotaryTransferAdd.html?type=jszr&id=' + datas.id;
+                        jumpGuanxi(datas.id);
+                    }
+                });
+                // 获取科室列表
+               function getKeshi () {
+                  $("#accDepId").empty();
+                  layui.form.render("select");
+                  $('#accDepId').append('<option value=""></option>');
+                  getAjax('/sys/dep/getOrgDepList', {}, function (resultMsg) {
+                     $.each(resultMsg.data.list, function (i, item) {
+                        $('#accDepId').append('<option value="' + item.id + '">' + item.depName + '</option>');
+                     });
+                     // $('#accDepId').val(vals);
+                     layui.form.render("select");
+                  });
+               }
+                // 搜索
+                form.on('submit(search)', function (data) {
+                    if(data.field.date==="开始日期-结束日期"){
+                        data.field.date = ''
+                    }
+                    if(data.field.name==="姓名或身份证号"){
+                        data.field.name = ''
+                    }
+                    jsonParam.orgId = data.field.orgId;
+                    jsonParam.startTime = data.field.timeRange.slice(0,10);
+                    jsonParam.endTime = data.field.timeRange.slice(13,23);
+                    jsonParam.sfzhOrName = data.field.sfzhOrName;
+                    jsonParam.audit = data.field.audit;
+                    getList(jsonParam);
+                    return false; //很重要的一句话，不能删
+                });
+
+                getHosList();
+                function getHosList(){
+                    if (parent.loginUserInfo.role.roleType == '99') {
+                        getAjax('/sys/org/queryOrgList', {}, function (resultMsg) {
+                            if(resultMsg.retCode == 0){
+                                $.each(resultMsg.data, function (i, item) {
+                                    $("#hosList").append('<option value="' + item.id + '">' + item.orgName + '</option>');
+                                });
+                                layui.form.render("select");
+                            }
+                        });
+                    } else{
+                        var jsonParams = {
+                            id: parent.loginUserInfo.orgId,
+                        };
+                        getAjax('/sys/org/getRelHosOrg', jsonParams, function (resultMsg) {
+                            if(resultMsg.retCode == 0){
+                                $.each(resultMsg.data.downOrgList, function (i, item) {
+                                    $("#hosList").append('<option value="' + item.id + '">' + item.orgName + '</option>');
+                                });
+                                layui.form.render("select");
+                            }
+                        });
+                    }
+
+                }
+            });
+        })
+    </script>
+</body>
+<div class="popup-box" id="fenliu">
+   <form class="layui-form" action="" lay-filter="formData">
+      <div>
+         <label class="layui-form-label">接诊科室</label>
+         <div class="layui-input-block">
+            <select name="accDepId" lay-search="" lay-filter="accDepId" id="accDepId">
+               <option value=""></option>
+            </select>
+         </div>
+   </div>
+   </form>
+</div>
+</html>

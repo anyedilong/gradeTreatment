@@ -1,0 +1,320 @@
+<!--powerManageList.html 权限设置-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限设置列表</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .power-model > span {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .page_tag > span {
+            font-size: 14px;
+        }
+        .func_tag > span {
+            font-size: 12px;
+            border-radius: 18px !important;
+            height: 34px !important;
+            line-height: 32px !important;
+        }
+        .content_tag span{
+            behavior: url(../js/PIE/PIE.htc);
+            position: relative;
+        }
+        .popup-box {
+            display: none;
+            padding: 20px;
+        }
+        .popup-box .layui-form-item{
+            margin-bottom: 20px;
+        }
+        .layui-form-label{
+            width:auto;
+        }
+        .layui-input-block{
+            margin-left: 80px;
+        }
+        .content_tag{
+            padding-left: 20px;
+        }
+        .content_tag span{
+            box-sizing: border-box;
+            display: inline-block;
+            width:110px;
+            height:40px;
+            margin: 0 25px 20px 0;
+            border: 1px solid #E8EAED;
+            cursor: pointer;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 4px;
+        }
+        .content_tag span.select_label{
+            background: #b9d4f6;
+            border: 1px solid #b9d4f6;
+            color: #fff;
+        }
+        .page_tag > .select_label {
+            background: #3B76F6 !important;
+            border-color: #3B76F6 !important;
+            color: #fff !important;
+            /*display: inline-block;*/
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <div class="page_title">权限设置</div>
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="codeOrName" autocomplete="off" class="layui-input" placeholder="角色名称">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+            </div>
+        </form>
+        <div class="data-card charts_box">
+            <div style="width: 600px;">
+                <table class="layui-hide" id="table" lay-filter="dataList" lay-skin="row"></table>
+                <script type="text/html" id="barDemo1">
+                    <a class="m-blue1 cursorP" lay-event="distribution">分配权限</a>
+                    &nbsp;
+                    {{# if(d.roleName === '超级管理员' ||d.roleName === '院领导' ||d.roleName === '院医生' ){ }}
+                    <a class="m-gray4 cursorN" lay-event="">删除</a>
+                    {{# } else { }}
+                    <a class="m-blue1 cursorP" lay-event="del">删除</a>
+                    {{# } }}
+                </script>
+                <div id="laypage"></div>
+            </div>
+        </div>
+    </div>
+    <!--弹框-->
+    <div class="popup-box" id="pop">
+        <!--<div class="power-model">-->
+            <!--<span>转出管理</span>-->
+            <!--<div class="content_tag page_tag">-->
+                <!--<span>转出申请</span>-->
+                <!--<div class="content_tag func_tag">-->
+                    <!--<span>添加转出单</span>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</body>
+<script>
+    $(function () {
+        layui.use(['form','table','laypage'], function(){
+            var form = layui.form;
+            var table = layui.table;
+            var laypage = layui.laypage;
+            var tableobj = {
+                elem: '#table',
+                cellMinWidth: 80,
+                even: true,
+                cols: [[
+                    {field: 'roleCode', title: '角色编码'},
+                    {field: 'roleName', title: '角色名称',minWidth:200},
+                    {fixed: 'right', title: '操作',toolbar: '#barDemo1',minWidth:100}
+                ]],
+                data: []
+            };
+            var pageobj = {
+                elem: 'laypage',
+                count: 0, //数据总数
+                limit: 10,  //得到每页显示的条数
+                curr: 1,  //得到当前页，以便向服务端请求对应页的数据。
+                layout: ['count', 'prev', 'page', 'next']
+            };
+            var jsonParam = {
+                codeOrName:'',
+                pageNo: '1', // 起始页， 不传默认10， 不能为“”
+                pageSize: '10' // 页大小， 不传默认10， 不能为“”
+            };
+            function getList(jsonParam){
+                getAjax('/sys/role/getRoleList',jsonParam,function (resultMsg) {
+                    tableobj.data = resultMsg.data.list;
+                    pageobj.count = resultMsg.data.count;
+                    table.render(tableobj);
+                    laypage.render(pageobj);
+                });
+            }
+            getList(jsonParam);
+            pageobj.jump = function (obj) {
+                jsonParam.pageSize = obj.limit;
+                jsonParam.pageNo = obj.curr;
+                getAjax('/sys/role/getRoleList', jsonParam, function (resultMsg) {
+                    tableobj.data = resultMsg.data.list;
+                    table.render(tableobj);
+                });
+            };
+            laypage.render(pageobj);
+            // 查询
+            form.on('submit(search)', function (data) {
+                jsonParam.codeOrName = data.field.codeOrName;
+                getList(jsonParam);
+                return false; //很重要的一句话，不能删
+            });
+            //监听工具条
+            var layerDel = null;
+            var layerDis = null;
+            table.on('tool(dataList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var formdata = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+                if(layEvent === 'distribution'){ //分配权限
+                    layerDis = layer.open({
+                        type: 1,
+                        skin: 'my-layui-layer', //加上边框
+                        title: '提示',
+                        area: ['750px', '690px'], //宽高
+                        content: $('#pop'),
+                        btn: ['关闭', '确认'],
+                        btn1: function (index) {
+                            layer.close(index);
+                        },
+                        btn2: function () {
+                            savePower(formdata.id);
+                            return false;
+                        },
+                        success:function () {
+                            $('#pop span').removeClass('select_label');
+                            // 获取菜单权限
+                            var jsonParam = {
+                                roleId: formdata.id,
+                                type:'1'
+                            };
+                            getAjax('/sys/function/getMenuListByRoleId',jsonParam,function (resultMsg) {
+                                if(resultMsg.data){
+                                    $.each(resultMsg.data,function (i,item) {
+                                        var ids= item.id;
+                                        var pageSpan = $('#pop .page_tag>span');
+                                        $.each(pageSpan,function (i,item) {
+                                            if($(item).attr('ids') == ids){
+                                                $(item).addClass('select_label')
+                                            }
+                                        })
+                                    })
+                                }
+                            });
+                            // 获取按钮权限
+                            var jsonParam2 = {
+                                roleId: formdata.id,
+                                type:'2'
+                            };
+                            getAjax('/sys/function/getMenuListByRoleId',jsonParam2,function (resultMsg) {
+                                if(resultMsg.data){
+                                    $.each(resultMsg.data,function (i,item) {
+                                        var ids= item.id;
+                                        var pageSpan = $('#pop .func_tag>span');
+                                        $.each(pageSpan,function (i,item) {
+                                            if($(item).attr('ids') == ids){
+                                                $(item).addClass('select_label')
+                                            }
+                                        })
+                                    })
+                                }
+                            });
+                        }
+                    });
+                }else if(layEvent === 'del'){
+                    // 删除角色
+                    layerDel = layer.open({
+                        id: 'login',
+                        type: 1,
+                        title: '提示',
+                        closeBtn: 0,
+                        skin: 'my-layui-layer', //样式类名
+                        area: ['360px', '180px'],
+                        shadeClose: true,
+                        shade: 0.2,
+                        content: '<div style="padding: 20px;">确定删除该条数据吗？</div>', //iframe的url
+                        btn: ['关闭', '确认'],
+                        btn2: function () {
+                            getAjax('/sys/role/deleteRole', {id: formdata.id}, function (resultMsg) {
+                                getList(jsonParam);
+                                layer.close(layerDel);
+                            });
+                            return false;
+                        }
+                    });
+                }
+            });
+            var selPower = [];
+            $('#pop').on('click','span',function () {
+                $(this).toggleClass('select_label');
+            });
+            $('#pop').on('click', '.page_tag>span', function () {
+                if (!$(this).hasClass('select_label')) {
+                    var funcSpan = $(this).next('.func_tag').children('span');
+                    funcSpan.removeClass('select_label');
+                }
+            });
+            $('#pop').on('click', '.func_tag>span', function () {
+                if ($(this).hasClass('select_label')) {
+                    var pageSpan = $(this).parent().prev('span');
+                    pageSpan.addClass('select_label');
+                }
+            });
+            // 保存权限
+            function savePower(ids) {
+                var spans = $('span.select_label');
+                selPower = [];
+                for(var i=0;i<spans.length;i++){
+                    selPower.push($(spans[i]).attr('ids'))
+                }
+                var jsonParam = {
+                    roleId:ids,
+                    funcitons:selPower.toString()
+                };
+                getAjax('/sys/function/author',jsonParam,function (resultMsg) {
+                    layer.open({
+                        title: '提示',
+                        icon: 1,
+                        content: '保存成功',
+                        skin: 'my-layui-layer',
+                        btn: ['关闭', '确认'],
+                        btn1: function () {
+                            layer.closeAll();
+                        },
+                        btn2: function () {
+                            layer.closeAll();
+                        }
+                    })
+                });
+            }
+            // 获取权限列表
+            getPowerList();
+            function getPowerList() {
+                getAjax('/sys/function/getMenuList',{},function (resultMsg) {
+                    var html = '';
+                    var arr = resultMsg.data;
+                    $.each(arr, function (i, item) {
+                        html += '<div class="power-model"><span ids="' + item.id + '">' + item.name + '</span>'
+                        $.each(item.funList,function (i,item2) {
+                            if (item2.funList.length == 0 || item2.funList == undefined) {
+                                html += '<div class="content_tag page_tag" style="display: inline-block;"><span ids="' + item2.id + '">'+item2.name+'</span></div>';
+                            } else {
+                                html += '<div class="content_tag page_tag"><span ids="' + item2.id + '">'+item2.name+'</span><div class="content_tag func_tag">';
+                                $.each(item2.funList,function (i,item3) {
+                                    html += '<span ids="' + item3.id + '">'+item3.name+'</span>';
+                                });
+                                html += '</div></div>';
+                            }
+                        });
+                        html += '</div>';
+                    });
+                    $('#pop').html(html);
+                });
+            }
+        });
+    })
+</script>
+</html>

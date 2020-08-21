@@ -1,0 +1,270 @@
+<!--departManageList.html  科室管理-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>科室管理列表</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .popup-box .layui-form-item{
+            margin-bottom: 20px;
+        }
+        .popup-box {
+            display: none;
+        }
+        .popup-box .layui-input-block {
+            margin-left: 55px;
+        }
+        .popup-box > .layui-form {
+            padding: 30px 30px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <div class="page_title">科室管理
+            <div class="tableAddBtn fr cursorP" id="departAdd">
+                <!--<i class="iconfont fl">&#xe61e;</i>-->
+                <!--<span class="fl">添加科室</span>-->
+            </div>
+        </div>
+        <form class="layui-form" action="">
+            <div class="layui-inline">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="codeOrName" autocomplete="off" class="layui-input" placeholder="科室名称/编码">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="search">搜索</button>
+            </div>
+        </form>
+        <div class="data-card charts_box">
+            <table class="layui-hide" id="table" lay-filter="dataList" lay-skin="row"></table>
+            <!--<script type="text/html" id="barDemo1">-->
+                <!--{{# if(d.status === '1'){ }}-->
+                <!--<a class="m-green" lay-event="state_0">关闭</a>-->
+                <!--{{# }if(d.status === '2') { }}-->
+                <!--<a class="" lay-event="state_1">开启</a>-->
+                <!--{{# } }}-->
+            <!--</script>-->
+            <script type="text/html" id="trBtn">
+                {{# for (var i = 0; i < parent.menuKSGL.length; i++) { }}
+                {{# if (parent.menuKSGL[i].name != '新增') { }}
+                {{# if (d.isDel == 0 && parent.menuKSGL[i].name == '删除') { }}
+                <a class="m-gray4" lay-event="{{parent.menuKSGL[i].name}}">{{parent.menuKSGL[i].name}}</a>
+                {{# } else { }}
+                <a class="m-blue1" lay-event="{{parent.menuKSGL[i].name}}">{{parent.menuKSGL[i].name}}</a>
+                {{# } }}
+                {{# } }}
+                {{# } }}
+            </script>
+            <div id="laypage"></div>
+        </div>
+    </div>
+    <!--弹框-->
+    <div class="popup-box" id="popup-box">
+        <form class="layui-form" lay-filter="addform" action="" id="addform">
+            <div class="layui-form-item">
+                <label class="layui-form-label">科室编码</label>
+                <div class="layui-input-block">
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" class="layui-input">
+                        <input type="text" name="depCode" lay-verify="required|yymcLen" autocomplete="off" class="layui-input" placeholder="请填写科室编码">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">科室名称</label>
+                <div class="layui-input-block">
+                    <div class="layui-input-block">
+                        <input type="text" name="depName" lay-verify="required|yymcLen" autocomplete="off" class="layui-input" placeholder="请填写科室名称">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item" style="display: none;">
+                <button id="addBtn" lay-submit lay-filter="addBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+                <button id="editBtn" lay-submit lay-filter="editBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+    $(function () {
+        layui.use(['form','table','laypage'], function(){
+            var form = layui.form;
+            var table = layui.table;
+            var laypage = layui.laypage;
+            var tableobj = {
+                elem: '#table',
+                cellMinWidth: 80,
+                even: true,
+                cols: [[
+                    {field: 'depCode', title: '科室编码'},
+                    {field: 'depName', title: '科室名称', minWidth: 200},
+                    {field: 'orgName', title: '所属医院'},
+                    {field: 'depDoctor', title: '科室主任'},
+                    {fixed: 'right', title: '管理', toolbar: '#trBtn', minWidth: 100}
+                ]],
+                data: []
+            };
+            form.verify({
+                yymcLen: function (value, item) {
+                    if (value.length > 20) {
+                        if (item.name == 'depCode') {
+                            return '科室编码不能超过20个字符！';
+                        } else if (item.name == 'depName') {
+                            return '科室名称不能超过20个字符';
+                        }
+                    }
+                }
+            });
+            var pageobj = {
+                elem: 'laypage',
+                count: 0, //数据总数
+                limit: 10,  //得到每页显示的条数
+                curr: 1,  //得到当前页，以便向服务端请求对应页的数据。
+                layout: ['count', 'prev', 'page', 'next']
+            };
+            var jsonParam = {
+                pageNo: '1', // 起始页， 默认10
+                pageSize: '10', // 页大小， 默认10
+                codeOrName: ''
+            };
+            function getList (jsonParam) {
+                getAjax('/sys/dep/getOrgDepList', jsonParam, function (resultMsg) {
+                    tableobj.data = resultMsg.data.list;
+                    pageobj.count = resultMsg.data.count;
+                    table.render(tableobj);
+                    laypage.render(pageobj);
+                });
+            }
+            getList(jsonParam);
+            pageobj.jump = function (obj) {
+                jsonParam.pageSize = obj.limit
+                jsonParam.pageNo = obj.curr
+                getAjax('/sys/dep/getOrgDepList', jsonParam, function (resultMsg) {
+                    tableobj.data = resultMsg.data.list;
+                    table.render(tableobj);
+                });
+            };
+            laypage.render(pageobj);
+            form.on('submit(search)', function (data) {
+                jsonParam.codeOrName = data.field.codeOrName;
+                getList(jsonParam);
+                return false; //很重要的一句话，不能删
+            })
+            //监听工具条
+            var layerEdit = null;
+            var layerDel = null;
+            table.on('tool(dataList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var formdata = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+                if ($(this).attr('class') == 'm-blue1') {
+                    if(layEvent === '修改'){ //修改
+                        layerEdit = layer.open({
+                            type: 1,
+                            skin: 'my-layui-layer', //加上边框
+                            title: '修改科室',
+                            area: ['460px', '270px'], //宽高
+                            content: $('#popup-box'),
+                            btn: ['关闭', '确认'],
+                            btn1: function (index) {
+                                layer.close(layerEdit);
+                            },
+                            btn2: function () {
+                                $('#editBtn').click();
+                                return false;
+                            },
+                            success: function(layero, index){
+                                //给表单赋值
+                                form.val("addform", formdata);
+                                form.render(); //更新全部
+                            }
+                        });
+                    } else if(layEvent === '删除'){
+                        layerDel = layer.open({
+                            id: 'login',
+                            type: 1,
+                            title: '提示',
+                            closeBtn: 0,
+                            skin: 'my-layui-layer', //样式类名
+                            area: ['360px', '180px'],
+                            shadeClose: true,
+                            shade: 0.2,
+                            content: '<div style="padding: 20px;">确定删除该条数据吗</div>', //iframe的url
+                            btn: ['关闭', '确认'],
+                            btn2: function () {
+                                getAjax('/sys/dep/deleteOrgDep', {id: formdata.id}, function (resultMsg) {
+                                    getList(jsonParam);
+                                    layer.close(layerDel);
+                                });
+                                return false;
+                            }
+                        });
+                    }
+                }
+            });
+            var layerAdd = null;
+            var btnArr = [];
+            $.each(parent.menuKSGL, function (i, item) {
+                btnArr.push(item.name);
+            });
+            if (btnArr.join(',').indexOf('新增') > -1) {
+                $('#departAdd').html('<i class="iconfont fl">&#xe61e;</i>' +
+                '<span class="fl">添加科室</span>');
+            } else {
+                $('#departAdd').html('');
+            }
+            if (btnArr.join(',').indexOf('修改') < 0 && btnArr.join(',').indexOf('删除') < 0) {
+                var tableI = null
+                $.each(tableobj.cols[0], function (i, item) {
+                    if (item.toolbar == '#trBtn') {
+                        tableI = i
+                    }
+                });
+                tableobj.cols[0].splice(tableI, 1);
+            }
+            $('#departAdd').click(function () {
+                $("#addform")[0].reset();
+                layerAdd = layer.open({
+                    type: 1,
+                    skin: 'my-layui-layer', //加上边框
+                    title: '添加科室',
+                    area: ['460px', '270px'], //宽高
+                    content: $('#popup-box'),
+                    btn: ['关闭', '确认'],
+                    btn1: function (index) {
+                        layer.close(layerAdd);
+                    },
+                    btn2: function () {
+                        $('#addBtn').click();
+                        return false;
+                    }
+                });
+            });
+            $('#editBtn').click(function () {
+                form.on('submit(editBtn)', function(data){
+                    var editData = data.field;
+                    getAjax('/sys/dep/updateOrgDept', editData, function (resultMsg) {
+                        layer.close(layerEdit);
+                        getList(jsonParam);
+                    });
+                });
+            });
+            $('#addBtn').click(function () {
+                form.on('submit(addBtn)', function(data){
+                    var addData = data.field;
+                    data.field.id = '';
+                    getAjax('/sys/dep/addOrgDept', addData, function (resultMsg) {
+                        layer.close(layerAdd);
+                        getList(jsonParam);
+                    });
+                });
+            });
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,156 @@
+{
+  "id": "1595764",
+  "name": "分级诊疗",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "13262764",
+      "name": "icon_nav_getinto",
+      "font_class": "icon_nav_getinto",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "13259336",
+      "name": "icon_nav_statistics",
+      "font_class": "icon_nav_statistics",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "13259337",
+      "name": "icon_nav_out",
+      "font_class": "icon_nav_out",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "13259338",
+      "name": "icon_nav_system",
+      "font_class": "icon_nav_system",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "13259339",
+      "name": "icon_nav_home",
+      "font_class": "icon_nav_home",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "9520840",
+      "name": "单色圆点",
+      "font_class": "danseyuandian",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "9743260",
+      "name": "向上箭头-面性",
+      "font_class": "shixinjiantou-xiangshang",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "7588115",
+      "name": "添加",
+      "font_class": "tianjia",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "5639559",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "691176",
+      "name": "定位",
+      "font_class": "dingwei",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "9512652",
+      "name": "电话",
+      "font_class": "tel",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "5712913",
+      "name": "上传",
+      "font_class": "shangchuan",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "5979972",
+      "name": "双右箭头-01",
+      "font_class": "shuangyoujiantou-",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "5979973",
+      "name": "双左箭头-01",
+      "font_class": "shuangzuojiantou-",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "6275362",
+      "name": "添加",
+      "font_class": "icon-test",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "936756",
+      "name": "眼睛",
+      "font_class": "yanjing",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "12588746",
+      "name": "icon_user",
+      "font_class": "icon_user",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "9678910",
+      "name": "关  闭",
+      "font_class": "guanbi-copy",
+      "unicode": "e716",
+      "unicode_decimal": 59158
+    },
+    {
+      "icon_id": "9743264",
+      "name": "向下箭头-面性",
+      "font_class": "shixinjiantou-xiangshang-copy",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "2570058",
+      "name": "日历",
+      "font_class": "rili-tianchong",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "2459190",
+      "name": "主页",
+      "font_class": "home",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    }
+  ]
+}

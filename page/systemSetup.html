@@ -1,0 +1,294 @@
+<!--系统设置-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>系统设置</title>
+    <script src="../js/page/commen.js"></script>
+    <script src="../js/base64.js"></script>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        .setBox{
+            padding: 60px 40% 60px 10px; background: #fff;border-radius: 4px;height: 100%;
+        }
+        .layui-form-item{
+            margin-bottom: 20px;
+        }
+        .uploadImg{
+            color: #E8EAED;
+            border: 1px dashed #E8EAED;
+            width:300px;
+            /*height:120px;*/
+        }
+        .uploadImg i{
+            display: inline-block;
+            font-size: 40px;
+        }
+        .img_box{
+            padding: 40px;text-align: center;
+        }
+        .uploadImg img{
+            width: 100%;
+        }
+        .layui-form-label{
+            width: 110px !important;
+        }
+        .reset_b{
+            background: #F39800;
+        }
+        .save_b{
+            background: #32B16C;
+        }
+        .layui-btn{
+            padding: 0 36px;
+        }
+        .btn_box{
+            margin-top: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="pageBox">
+        <div class="page_title">系统设置</div>
+        <div class="setBox">
+            <form class="layui-form" action="" lay-filter="formGet">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">系统名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">系统logo</label>
+                    <div class="layui-input-block">
+                        <iframe id="iframePho" src="http://192.168.2.2:8073/treatment
+/upfile.html" frameborder="0" name="iframe_a"></iframe>
+                        <!--<iframe id="iframePho" src="http://192.168.1.53:8085/upfile.html" frameborder="0" name="iframe_a"></iframe>-->
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">院内审核</label>
+                    <div class="layui-input-block">
+                        <select name="status" lay-filter="aihao">
+                            <option value="0">关闭</option>
+                            <option value="1" selected="">开启</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item btn_box">
+                    <div class="layui-input-block">
+                        <button type="reset" id="resetBtn"  lay-filter="reset" class="layui-btn reset_b">重置</button>
+                        <button type="submit" class="layui-btn save_b" lay-submit="" lay-filter="save">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var logoSrc = ''
+    window.onload = function(){
+    	window.frames["iframePho"].contentWindow.postMessage('systemSetup'+","+logoSrc, '*');
+    	// window.frames["mainIframe"].contentWindow.postMessage('systemSetup'+","+logoSrc, '*');
+    }
+    jQuery('[placeholder]').focus(function() {
+        var input = jQuery(this);
+        if (input.val() == input.attr('placeholder')) {
+            input.val('');
+            input.removeClass('placeholder');
+        }
+        input.css("color","#555");
+    }).blur(function() {
+        var input = jQuery(this);
+        if (input.val() == '' || input.val() == input.attr('placeholder')) {
+            input.addClass('placeholder');
+            input.val(input.attr('placeholder'));
+            input.css("color","#888");
+        }
+    }).blur().parents('form').submit(function() {
+        jQuery(this).find('[placeholder]').each(function() {
+            var input = jQuery(this);
+            if (input.val() == input.attr('placeholder')) {
+                input.val('');
+            }
+        })
+    });
+    $(function () {
+        $("#pic").click(function () {
+            $("#upload1").click();
+        });
+        // var logoSrc = ''
+        var id = ''
+        layui.use(['form'], function(){
+            var form = layui.form
+                ,layer = layui.layer;
+            if (window.attachEvent){
+                window.attachEvent('on'+'message', function(e) {
+                    console.log(e)
+                    if(e.data == '1000'){
+                        layer.msg("文件上传失败")
+                    } else if (e.data == '1012'){
+                        layer.msg('最多上传5个文件');
+                    } else if (e.data == '1013'){
+                        // waitImg = layer.load(1, {
+                        //     shade: [0.1,'#fff'] //0.1透明度的白色背景
+                        // });
+                    } else if (e.data == '1014'){
+                        // layer.closeAll();
+                    } else if(e.data == '1001'){
+                        layer.msg("请添加需要上传的文件")
+                    }else if(e.data == '-1'){
+                        layer.msg("系统错误")
+                    }else if(e.data == '1011'){
+                        layer.msg("上传格式不正确")
+                    }else if(e.data == '1010'){
+                        layer.msg("请选择上传内容")
+                    }else{
+                        // $("#pic").attr("src",e.data)
+                        logoSrc = e.data
+                    }
+                    // debugger;
+                }, false);
+            } else if (window.addEventListener) {
+                window.addEventListener('message', function(e) {
+                    console.log(e)
+                    if(e.data == '1000'){
+                        layer.msg("文件上传失败")
+                    } else if (e.data == '1012'){
+                        layer.msg('最多上传5个文件');
+                    } else if (e.data == '1013'){
+                        // waitImg = layer.load(1, {
+                        //     shade: [0.1,'#fff'] //0.1透明度的白色背景
+                        // });
+                    } else if (e.data == '1014'){
+                        // layer.closeAll();
+                    } else if(e.data == '1001'){
+                        layer.msg("请添加需要上传的文件")
+                    }else if(e.data == '-1'){
+                        layer.msg("系统错误")
+                    }else if(e.data == '1011'){
+                        layer.msg("上传格式不正确")
+                    }else if(e.data == '1010'){
+                        layer.msg("请选择上传内容")
+                    }else{
+                        // $("#pic").attr("src",e.data)
+                        logoSrc = e.data
+                    }
+                    // debugger;
+                }, false);
+            }
+            getMessage()
+            function getMessage(){
+                $.ajax({
+                    type: 'get',
+                    dataType: "jsonp",
+                    jsonp: "callback",//服务端用于接收
+                    async: false,
+                    contentType: 'application/json',
+                    url: noLoghin + '/sys/platform/show',
+                    data: {},
+                    success: function (resultMsg) {
+                        form.val('formGet', {
+                            "name": resultMsg.data.name
+                            ,"status": resultMsg.data.status
+                        });
+                        logoSrc = resultMsg.data.logo;
+                        form.render('select');
+                        id = resultMsg.data.id;
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        alert('加载资源失败');
+                    }
+                });
+            }
+            //监听提交
+            form.on('submit(save)', function(data){
+                // var rr = ''
+                // window.onload = function(){
+                //     window.frames["iframePho"].contentWindow.postMessage('systemSetup'+","+rr, '*');
+                //     console.log(rr)
+                // }
+                if(data.field.name.length > 14){
+                    layer.msg("系统设置名称过长，请重新设置")
+                }else {
+                    var jsonParam = {
+                        name: data.field.name,  //系统名称
+                        logo: logoSrc, //系统logo
+                        status: data.field.status,  //院内审核（0：关闭 1.开启）
+                        id: id
+                    }
+                    $.ajax({
+                        type: 'get',
+                        dataType: "jsonp",
+                        jsonp: "callback",//服务端用于接收
+                        async: false,
+                        contentType: 'application/json',
+                        url: noLoghin + '/sys/platform/save',
+                        data: jsonParam,
+                        success: function (resultMsg) {
+                            if (resultMsg.retCode == 0) {
+                                layer.msg("保存成功！")
+                                // parent.location.reload();
+                                $('#sysBox img', parent.document).attr('src', logoSrc);
+                                $('#sysBox span', parent.document).html(jsonParam.name);
+                            } else {
+                                layer.msg("保存失败！")
+                            }
+
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            console.log(XMLHttpRequest);
+                            console.log(textStatus);
+                            console.log(errorThrown);
+                            alert('加载资源失败');
+                        }
+                    });
+                }
+                return false;
+            });
+            $("#resetBtn").click(function () {
+                // window.frames["iframePho"].contentWindow.postMessage('reset', '*');
+                $.ajax({
+                    type: 'get',
+                    dataType: "jsonp",
+                    jsonp: "callback",//服务端用于接收
+                    async: false,
+                    contentType: 'application/json',
+                    url: noLoghin + '/sys/platform/reset',
+                    data: {},
+                    success: function (resultMsg) {
+                        if(resultMsg.retCode == 0){
+                            layer.msg("重置成功！")
+                            // getMessage();
+                            form.val('formGet', {
+                                "name": resultMsg.data.name
+                                ,"status": resultMsg.data.status
+                            });
+                            logoSrc = resultMsg.data.logo;
+                            form.render('select');
+                            id = resultMsg.data.id;
+                            window.frames["iframePho"].contentWindow.postMessage('systemSetup'+","+ logoSrc, '*');
+                        }else{
+                            layer.msg("重置失败！")
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        console.log(XMLHttpRequest);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        alert('加载资源失败');
+                    }
+                });
+            })
+        });
+    })
+</script>
+</body>
+</html>

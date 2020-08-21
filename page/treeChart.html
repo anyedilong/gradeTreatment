@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main_orgStructure" style="width:1200px; height:400px;position: absolute; top: 10%; left: 10%;"></div>
+<!-- ECharts单文件引入 -->
+<script src="echarts.js"></script>
+<script type="text/javascript">
+
+    var myChart = echarts.init(document.getElementById('main_orgStructure'));
+
+    var option = {
+        title : {
+            text: '组织结构图'
+        },
+        tooltip : {
+            show: false,
+            trigger: 'item',
+            formatter: "{b}: {c}"
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : false,
+        series : [
+            {
+                name:'树图',
+                type:'tree',
+                orient: 'vertical',  // vertical horizontal
+                rootLocation: {x: '50%', y: '15%'}, // 根节点位置  {x: 'center',y: 10}
+                nodePadding: 20,
+                layerPadding:40,
+                symbol: 'rectangle',
+                borderColor:'black',
+                itemStyle: {
+                    normal: {
+                        color: '#fff',//节点背景色
+                        label: {
+                            show: true,
+                            position: 'inside',
+                            textStyle: {
+                                color: 'black',
+                                fontSize: 15,
+                                //fontWeight:  'bolder'
+                            }
+                        },
+                        lineStyle: {
+                            color: '#000',
+                            width: 1,
+                            type: 'broken' // 'curve'|'broken'|'solid'|'dotted'|'dashed'
+                        }
+                    },
+                    emphasis: {
+                        label: {
+                            show: false
+                        }
+                    }
+                },
+                data: [
+                    {
+                        name: '公司',
+                        value: 6,
+                        symbolSize: [70, 30],
+                        symbol: 'rectangle',
+                        itemStyle: {
+                            normal: {
+                                borderWidth: 2,
+                                borderColor: 'black'
+                            }
+                        },
+                        children: [
+                            {
+                                name: '部门',
+                                value: 6,
+                                symbolSize: [70, 30],
+                                symbol: 'rectangle',
+                                itemStyle: {
+                                    normal: {
+                                        borderWidth: 2,
+                                        borderColor: 'black'
+                                    }
+                                },
+                                children: [
+                                    {
+                                        name: '小组',
+                                        value: 4,
+                                        symbolSize: [70, 30],
+                                        symbol: 'rectangle',
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'inside'
+                                                },
+                                                borderWidth: 2,
+                                                borderColor: 'black'
+                                            }
+                                        },
+                                        children: [
+                                            {
+                                                name: '负责人',
+                                                value: 4,
+                                                symbolSize: [60, 30],
+                                                symbol: 'rectangle',
+                                                itemStyle: {
+                                                    normal: {
+                                                        label: {
+                                                            show: true,
+                                                            position: 'inside'
+                                                        },
+                                                        borderWidth: 2,
+                                                        borderColor: 'black'
+                                                    }
+                                                },
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: '小组',
+                                        value: 4,
+                                        symbolSize: [70, 30],
+                                        symbol: 'rectangle',
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'inside'
+                                                },
+                                                borderWidth: 2,
+                                                borderColor: 'black'
+                                            }
+                                        },
+                                        children: [
+                                            {
+                                                name: '负责人',
+                                                value: 4,
+                                                symbolSize: [60, 30],
+                                                symbol: 'rectangle',
+                                                itemStyle: {
+                                                    normal: {
+                                                        label: {
+                                                            show: true,
+                                                            position: 'inside'
+                                                        },
+                                                        borderWidth: 2,
+                                                        borderColor: 'black'
+                                                    }
+                                                },
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                name: '部门',
+                                value: 6,
+                                symbolSize: [70, 30],
+                                symbol: 'rectangle',
+                                itemStyle: {
+                                    normal: {
+                                        borderWidth: 2,
+                                        borderColor: 'black'
+                                    }
+                                },
+                                children: [
+                                    {
+                                        name: '小组',
+                                        value: 4,
+                                        symbolSize: [70, 30],
+                                        symbol: 'rectangle',
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'inside'
+                                                },
+                                                borderWidth: 2,
+                                                borderColor: 'black'
+                                            }
+                                        },
+                                        children: [
+                                            {
+                                                name: '负责人',
+                                                value: 4,
+                                                symbolSize: [60, 30],
+                                                symbol: 'rectangle',
+                                                itemStyle: {
+                                                    normal: {
+                                                        label: {
+                                                            show: true,
+                                                            position: 'inside'
+                                                        },
+                                                        borderWidth: 2,
+                                                        borderColor: 'black'
+                                                    }
+                                                },
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: '小组',
+                                        value: 4,
+                                        symbolSize: [70, 30],
+                                        symbol: 'rectangle',
+                                        itemStyle: {
+                                            normal: {
+                                                label: {
+                                                    show: true,
+                                                    position: 'inside'
+                                                },
+                                                borderWidth: 2,
+                                                borderColor: 'black'
+                                            }
+                                        },
+                                        children: [
+                                            {
+                                                name: '负责人',
+                                                value: 4,
+                                                symbolSize: [60, 30],
+                                                symbol: 'rectangle',
+                                                itemStyle: {
+                                                    normal: {
+                                                        label: {
+                                                            show: true,
+                                                            position: 'inside'
+                                                        },
+                                                        borderWidth: 2,
+                                                        borderColor: 'black'
+                                                    }
+                                                },
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+    // 为echarts对象加载数据
+    myChart.setOption(option);
+
+</script>
+</body>

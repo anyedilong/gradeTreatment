@@ -1,0 +1,465 @@
+<!--rotaryTransferAdd.html 添加回转单-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加回转单</title>
+    <script src="../js/page/commen.js"></script>
+    <link rel="stylesheet" href="../css/page/outTransferAdd.css">
+    <style>
+        .fileBox div i {
+            display: none;
+            margin-left: 30px;
+            cursor: pointer;
+            color: #434343;
+        }
+        .fileBox div:hover i {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="pageBox">
+    <form class="layui-form" action="" lay-filter="formData">
+        <div class="page_title">
+            <span id="pageFun"></span>回转单
+            <div class="fr">
+                <button type="submit" class="layui-btn layui-btn-normal layui-btn-sm btn-submit btn-green" lay-submit="" lay-filter="formSubmit">提交</button>
+            </div>
+        </div>
+        <ul class="left_tab" id="leftTab">
+            <li class="active"><a href="#zzxx">转诊信息</a></li>
+            <li><a href="#hzxx">患者信息</a></li>
+            <li><a href="#lcxx">临床信息</a></li>
+        </ul>
+        <div class="layui-row layui-col-space20 rightTab">
+            <div class="layui-col-md12">
+                <div class="outer-container">
+                    <div class="page_card">
+                        <div class="layui-row layui-form-item" id="zzxx">
+                            <label class="layui-form-label com-tit">转诊信息</label>
+                        </div>
+                        <div class="layui-row layui-form-item">
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">所在医院</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="orgName" readonly lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="hidden" name="orgId" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">所在科室</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="depName" readonly lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="hidden" name="depId" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">医生姓名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="docName" readonly lay-verify="required" autocomplete="off" class="layui-input">
+                                    <input type="hidden" name="docId" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">接诊医院</label>
+                                <div class="layui-input-block">
+                                    <select name="accOrgId" lay-search="" lay-filter="accOrgId" id="accOrgId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">接诊科室</label>
+                                <div class="layui-input-block">
+                                    <select name="accDepId" lay-search="" lay-filter="accDepId" id="accDepId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">接诊医生</label>
+                                <div class="layui-input-block">
+                                    <select name="accDocName" lay-search="" lay-verify="required" lay-filter="accDocName" id="accDocName">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">就诊日期</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="checkTime" autocomplete="off" class="layui-input date_scope" id="laydate" placeholder=" - ">
+                                    <i class="iconfont iconrili-tianchong data_icon m-gray2"></i>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">诊断编码</label>
+                                <div class="layui-input-block">
+                                    <input id="zdCode" type="text" name="diaCode" lay-verify="required" readonly autocomplete="off" class="layui-input zdCode">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">转诊目的</label>
+                                <div class="layui-input-block">
+                                    <select name="refPurpose" lay-filter="refPurpose">
+                                        <option value=""></option>
+                                        <option value="0">确诊疾病</option>
+                                        <option value="1">进一步化验，辅助检查</option>
+                                        <option value="2">专科复诊</option>
+                                        <option value="3">随访要求</option>
+                                        <option value="4">遵循上级规定</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">初步印象</label>
+                                <div class="layui-input-block">
+                                    <textarea name="firstImpression" lay-verify="required|valMaxLen" placeholder="" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-form-item" id="hzxx">
+                            <label class="layui-form-label com-tit">患者信息</label>
+                            <div class="layui-input-block cursorP fr" id="getDangan">
+                                <span class="fr m-orange"><i class="iconfont iconyanjing"></i>查看居民健康档案浏览器</span>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-form-item">
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">患者姓名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="name" lay-verify="required|valMaxLen" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">身份证号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" id="sfzh" name="sfzh" lay-verify="required|idcard" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">出生日期</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="birthday" class="layui-input date_scope" autocomplete="off" id="laydate1" placeholder=" - ">
+                                    <i class="iconfont iconrili-tianchong data_icon m-gray2"></i>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">患者性别</label>
+                                <div class="layui-input-block">
+                                    <select name="sex" lay-filter="sex" id="sex">
+                                        <option value=""></option>
+                                        <option value="女">女</option>
+                                        <option value="男">男</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">患者年龄</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="age" maxlength="10" lay-verify="required|years" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">患者身高</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="height" lay-verify="required|heightReg" autocomplete="off" class="layui-input">
+                                    <span class="data_icon m-gray4">cm</span>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">患者体重</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="weight" lay-verify="required|weightReg" autocomplete="off" class="layui-input">
+                                    <span class="data_icon m-gray4">Kg</span>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">联系方式</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="telephone" lay-verify="required|lxdh" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">家属联系方式</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="familyPhone" lay-verify="required|lxdh" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">档案编号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="dno" lay-verify="required|valMaxLen" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">医保类型</label>
+                                <div class="layui-input-block">
+                                    <select name="healthType" lay-filter="aihao" id="yblx">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">医保卡号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="healthCard" lay-verify="required|valMaxLen" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <!--改成四级联动-->
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">省</label>
+                                <div class="layui-input-block">
+                                    <select id="province" lay-filter="province" name="province" lay-verify="required" lay-search>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">市</label>
+                                <div class="layui-input-block">
+                                    <select id="city" lay-filter="city" name="city" lay-verify="required" lay-search>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">县/区</label>
+                                <div class="layui-input-block">
+                                    <select id="county" lay-filter="county" name="county" lay-verify="required" lay-search>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label">镇/街道</label>
+                                <div class="layui-input-block">
+                                    <select id="town" lay-filter="town" name="town" lay-verify="required" lay-search>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-md8">
+                                <label class="layui-form-label">详细地址</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="adress" lay-verify="required|valMaxLen" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">患者知情同意书</label>
+                                <div class="layui-input-block fileBox">
+                                    <!--<iframe id="iframePho1" src="http://192.168.1.248:8193/upfile.html" frameborder="0"></iframe>-->
+                                    <!--<iframe id="iframePho1" src="http://192.168.1.53:8085/upfile.html" frameborder="0"></iframe>-->
+                                    <iframe id="iframePho1" src="http://192.168.2.2:8073/treatment
+/upfile.html" frameborder="0"></iframe>
+                                    <div class="zqtyBox"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">相关附件</label>
+                                <div class="layui-input-block fileBox">
+                                    <!--<iframe id="iframePho2" src="http://192.168.1.248:8193/upfile.html" frameborder="0"></iframe>-->
+                                    <iframe id="iframePho2" src="http://192.168.2.2:8073/treatment
+/upfile.html" frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-row layui-form-item" id="lcxx">
+                            <label class="layui-form-label com-tit">临床信息</label>
+                        </div>
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">主诉</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="zs" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="1" textName="zs">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">现病史</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="xbs" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="2" textName="xbs">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">既往史</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="jwz" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="3" textName="jwz">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">过敏史</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="gms" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="4" textName="gms">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">家族史</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="jzs" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="5" textName="jzs">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">查体</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="ct" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="6" textName="ct">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">辅助检查</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="fzjc" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="7" textName="fzjc">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <!--<div class="layui-col-md12">-->
+                                <!--<label class="layui-form-label">治疗经过</label>-->
+                                <!--<div class="layui-input-block mould-block">-->
+                                    <!--<textarea placeholder="" name="zljg" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>-->
+                                    <!--<div class="mould-box fl">-->
+                                        <!--<ul class="mould-ul" m-type="8" textName="zljg">-->
+                                            <!--<li class="mould-li mould-yy">引用模板</li>-->
+                                            <!--<li class="mould-li mould-tq">提取模板</li>-->
+                                        <!--</ul>-->
+                                    <!--</div>-->
+                                    <!--<div class="clear"></div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">主要检查结果</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="jcjg" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="10" textName="jcjg">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label">康复建议</label>
+                                <div class="layui-input-block mould-block">
+                                    <textarea placeholder="" name="kfjy" lay-verify="required|valMaxLen" class="layui-textarea fl"></textarea>
+                                    <div class="mould-box fl">
+                                        <ul class="mould-ul" m-type="11" textName="kfjy">
+                                            <li class="mould-li mould-yy">引用模板</li>
+                                            <li class="mould-li mould-tq">提取模板</li>
+                                        </ul>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <input type="hidden" name="inId">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--弹窗div-->
+<div class="popup-box" id="mouldpop">
+    <ul class="mouldpop-ul">
+        <!--<li class="mouldpop-li">-->
+        <!--<div class="mouldpop-tit"></div>-->
+        <!--<div class="mouldpop-cont"></div>-->
+        <!--<div class="card-btn">-->
+        <!--<img class="delete-btn cursorP" src="../img/btn_delete.png" alt="">-->
+        <!--</div>-->
+        <!--</li>-->
+    </ul>
+</div>
+<div class="popup-box" id="mouldaddpop">
+    <form class="layui-form" action="" lay-filter="addform" id="addform">
+        <div class="layui-form-item">
+            <div class="label-div">请填写模板标题</div>
+            <div>
+                <input type="text" name="title" autocomplete="off" lay-verify="mbbtrequired" class="layui-input">
+                <input type="hidden" name="depict" lay-verify="mbrequired" class="layui-input">
+                <input type="hidden" name="type" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="display: none;">
+            <button id="addBtn" lay-submit lay-filter="addBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+        </div>
+    </form>
+</div>
+<div class="popup-box" id="getDanganPop">
+    <form class="layui-form" action="" lay-filter="addform" id="getDanganForm">
+        <div class="layui-form-item">
+            <div class="label-div">请填写居民身份证号</div>
+            <div>
+                <input type="text" name="sfzh" id="sfzhpop" autocomplete="off" lay-verify="required" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" style="display: none;">
+            <button id="getDanganBtn" lay-submit lay-filter="getDanganBtn" type="button" class="layui-btn layui-btn-warm">保存</button>
+        </div>
+    </form>
+</div>
+<div class="popup-box" id="zhenduanpop">
+    <form class="layui-form" action="" lay-filter="addform">
+        <div class="layui-form-item">
+            <input type="text" name="codeOrName" placeholder="输入疾病名称" autocomplete="off" class="layui-input fl searchInp">
+            <button lay-submit lay-filter="searchCode" type="button" class="layui-btn layui-btn-normal fr">搜索</button>
+        </div>
+    </form>
+    <div class="data-card charts_box pop-table">
+        <button id="selectBtn" class="layui-btn" data-type="getCheckData" style="display: none">获取选中行数据</button>
+        <table class="layui-table" id="table" lay-filter="dataList" lay-skin="line"></table>
+        <div id="laypage"></div>
+    </div>
+</div>
+</body>
+<script src="../js/page/guanxi.js"></script>
+<script src="../js/page/rotaryTransferAdd.js"></script>
+</html>

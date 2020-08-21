@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/page/commen.js"></script>
+    <style>
+        .charts {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="charts" id="linecharts"></div>
+    <div class="charts" id="barcharts"></div>
+</body>
+<script>
+    var linecharts = echarts.init(document.getElementById('linecharts'));
+    var lineoption = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'line'
+        }]
+    };
+    linecharts.setOption(lineoption);
+    var barcharts = echarts.init(document.getElementById('barcharts'));
+    var baroption = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'bar'
+        }]
+    };
+    barcharts.setOption(baroption);
+    barcharts.on('click', function (param) {
+        var name = param.name;
+        if(name == "Mon"){
+            window.location.href = "${base}/admin/user/list.htm";
+        }else if(name=="Tue"){
+            window.location.href = "${base}/admin/classify/list.htm";
+        }else if(name=="Wed"){
+            window.location.href = "${base}/admin/news/list.htm";
+        }
+    });
+</script>
+</html>
